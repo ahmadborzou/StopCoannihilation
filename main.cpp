@@ -107,7 +107,8 @@ bool bg_type(string bg_ ,vector<GenParticle> pvec){
 	vvvec.clear();
 	for(int j = 0; j < (int)(pvec.size()); ++j){
 	  GenParticle * pp = &pvec.at(j);
-	  if (pp->Status == 3 && pp->M1 < (int)(pvec.size()) && pp->M2 < (int)(pvec.size()) && fabs(pp->PID) == 12 || fabs(pp->PID) == 14 || fabs(pp->PID) == 16 ){
+	  if (pp->Status == 3 && pp->M1 < (int)(pvec.size()) && pp->M2 < (int)(pvec.size()) 
+	      && (fabs(pp->PID) == 12 || fabs(pp->PID) == 14 || fabs(pp->PID) == 16) ){
 	    vvvec.push_back(pp->PID);
 	  }//end of if pp->PID == 12, 14, 16 = nutrinos
 	}//end of second loop
@@ -126,7 +127,8 @@ bool bg_type(string bg_ ,vector<GenParticle> pvec){
 	vvvec.clear();
 	for(int j = 0; j < (int)(pvec.size()); ++j){
 	  GenParticle * pp = &pvec.at(j);
-	  if (pp->Status == 3 && pp->M1 < (int)(pvec.size()) && pp->M2 < (int)(pvec.size()) && fabs(pp->PID) == 11 || fabs(pp->PID) == 13 || fabs(pp->PID) == 15){
+	  if (pp->Status == 3 && pp->M1 < (int)(pvec.size()) && pp->M2 < (int)(pvec.size()) 
+	      && (fabs(pp->PID) == 11 || fabs(pp->PID) == 13 || fabs(pp->PID) == 15)){
 	    vvvec.push_back(pp->PID);
 	  }//end of if pp->PID == 11, 13 15 = leptons
 	}//end of second loop
@@ -148,10 +150,12 @@ bool bg_type(string bg_ ,vector<GenParticle> pvec){
 	llvec.clear();
 	for(int j = 0; j < (int)(pvec.size()); ++j){
 	  GenParticle * pp = &pvec.at(j);
-	  if (pp->Status == 3 && pp->M1 < (int)(pvec.size()) && pp->M2 < (int)(pvec.size()) && fabs(pp->PID) == 11 || fabs(pp->PID) == 13 || fabs(pp->PID) == 15){
+	  if (pp->Status == 3 && pp->M1 < (int)(pvec.size()) && pp->M2 < (int)(pvec.size()) 
+	      && (fabs(pp->PID) == 11 || fabs(pp->PID) == 13 || fabs(pp->PID) == 15)){
 	    llvec.push_back(pp->PID);
 	  }//end of if pp->PID == 11, 13 15 = leptons
-	  if (pp->Status == 3 && pp->M1 < (int)(pvec.size()) && pp->M2 < (int)(pvec.size()) && fabs(pp->PID) == 12 || fabs(pp->PID) == 14 || fabs(pp->PID) == 16){
+	  if (pp->Status == 3 && pp->M1 < (int)(pvec.size()) && pp->M2 < (int)(pvec.size()) 
+	      && (fabs(pp->PID) == 12 || fabs(pp->PID) == 14 || fabs(pp->PID) == 16)){
 	    vvvec.push_back(pp->PID);
 	  }//end of if pp->PID == 12, 14, 16 = neutrino
 
@@ -179,7 +183,8 @@ bool bg_type(string bg_ ,vector<GenParticle> pvec){
 	llvec.clear();
 	for(int j = 0; j < (int)(pvec.size()); ++j){
 	  GenParticle * ppa = &pvec.at(j);
-	  if (ppa->Status == 3 && ppa->M1 < (int)(pvec.size()) && ppa->M2 < (int)(pvec.size()) && fabs(ppa->PID) == 11 || fabs(ppa->PID) == 13 || fabs(ppa->PID) == 15 ){
+	  if (ppa->Status == 3 && ppa->M1 < (int)(pvec.size()) && ppa->M2 < (int)(pvec.size()) 
+	      && (fabs(ppa->PID) == 11 || fabs(ppa->PID) == 13 || fabs(ppa->PID) == 15) ){
 	    llvec.push_back(ppa->PID);
 	  }//end of if ppa->PID == 11, 13, 15 = electron , muon, tau
 	}//end of second loop
@@ -198,7 +203,8 @@ bool bg_type(string bg_ ,vector<GenParticle> pvec){
 	llvec.clear();
 	for(int j = 0; j < (int)(pvec.size()); ++j){
 	  GenParticle * ppa = &pvec.at(j);
-	  if (ppa->Status == 3 && ppa->M1 < (int)(pvec.size()) && ppa->M2 < (int)(pvec.size()) && fabs(ppa->PID) == 11 || fabs(ppa->PID) == 13 || fabs(ppa->PID) == 15 ){
+	  if (ppa->Status == 3 && ppa->M1 < (int)(pvec.size()) && ppa->M2 < (int)(pvec.size()) 
+	      && (fabs(ppa->PID) == 11 || fabs(ppa->PID) == 13 || fabs(ppa->PID) == 15) ){
 	    llvec.push_back(ppa->PID);
 	  }//end of if ppa->PID == 11, 13, 15 = electron , muon, tau
 	}//end of second loop
@@ -209,73 +215,76 @@ bool bg_type(string bg_ ,vector<GenParticle> pvec){
     return false;
   }//end of if Wjj
 
-if(bg_=="TTbar"){
-int numofT=0;//this will determine how many T or Tbar exist in the event.
-for(int i = 0; i < (int)(pvec.size()); ++i){
- GenParticle * pa = &pvec.at(i);
-//+-6 are the PID codes of T quark 
-if(fabs(pa->PID)==6) numofT+=1; 
-}
-if(numofT==2) return true;
-return false;
-}//end of TTbar
+  if(bg_=="TTbar"){
+    int numofT=0;//this will determine how many T or Tbar exist in the event.
+    for(int i = 0; i < (int)(pvec.size()); ++i){
+      GenParticle * pa = &pvec.at(i);
+      //+-6 are the PID codes of T quark 
+      if(fabs(pa->PID)==6) numofT+=1; 
+    }
+    if(numofT==2) return true;
+    return false;
+  }//end of TTbar
 
-///These following functions make sense only if the leptons in the event are coming from TTbar. If there are TTbar and leptons not from TTbar in the events this function still consider the leptons are coming from TTbar. There are many solutions for this. But since currently we are only dealing with TTbar events these are good.  
-if(bg_=="TTSingLep"){
-int GenSize = pvec.size();
-int numofT=0;//this will determine how many T or Tbar exist in the event.
-vector<GenParticle> lepvec;//this will determine how many lepton exist in the event
-for(int i = 0; i < GenSize; ++i){
- GenParticle * p = &pvec.at(i);
-if(fabs(p->PID)==6) numofT+=1;
-if(p->M1 < GenSize && p->M2 < GenSize && (abs(p->PID) == 11 || abs(p->PID) == 13 || abs(p->PID) == 15)) lepvec.push_back(*p);
-}
-//now modify lepton vector
-if(lepvec.size()==2){
-if(lepvec.at(0).P4().DeltaR(lepvec.at(1).P4())<=0.8) lepvec.erase(lepvec.begin()+1);
-}
-if(numofT==2 && lepvec.size()==1) return true;
-return false;
-}//end of TTSingLep
+  ///These following functions make sense only if the leptons in the event are coming from TTbar. If there are TTbar and leptons not from TTbar in the events this function still consider the leptons are coming from TTbar. There are many solutions for this. But since currently we are only dealing with TTbar events these are good.  
+  if(bg_=="TTSingLep"){
+    int GenSize = pvec.size();
+    int numofT=0;//this will determine how many T or Tbar exist in the event.
+    vector<GenParticle> lepvec;//this will determine how many lepton exist in the event
+    for(int i = 0; i < GenSize; ++i){
+      GenParticle * p = &pvec.at(i);
+      if(fabs(p->PID)==6) numofT+=1;
+      if(p->M1 < GenSize && p->M2 < GenSize 
+	 && (abs(p->PID) == 11 || abs(p->PID) == 13 || abs(p->PID) == 15)) lepvec.push_back(*p);
+    }
+    //now modify lepton vector
+    if(lepvec.size()==2){
+      if(lepvec.at(0).P4().DeltaR(lepvec.at(1).P4())<=0.8) lepvec.erase(lepvec.begin()+1);
+    }
+    if(numofT==2 && lepvec.size()==1) return true;
+    return false;
+  }//end of TTSingLep
 
-if(bg_=="TTdiLep"){
-int GenSize = pvec.size();
-int numofT=0;//this will determine how many T or Tbar exist in the event.
-vector<GenParticle> lepvec;//this will determine how many lepton exist in the event
-for(int i = 0; i < GenSize; ++i){
- GenParticle * p = &pvec.at(i);
-if(fabs(p->PID)==6) numofT+=1;
-if(p->M1 < GenSize && p->M2 < GenSize && (abs(p->PID) == 11 || abs(p->PID) == 13 || abs(p->PID) == 15)) lepvec.push_back(*p);
-}
-//now modify lepton vector
-if(lepvec.size()==2){
-if(lepvec.at(0).P4().DeltaR(lepvec.at(1).P4())<=0.8) lepvec.erase(lepvec.begin()+1);
-}
-if(numofT==2 && lepvec.size()==2) return true;
-return false;
-}//end of TTdiLep
-
-if(bg_=="TThadronic"){
-int GenSize = pvec.size();
-int numofT=0;//this will determine how many T or Tbar exist in the event.
-vector<GenParticle> lepvec;//this will determine how many lepton exist in the event
-for(int i = 0; i < GenSize; ++i){
- GenParticle * p = &pvec.at(i);
-if(fabs(p->PID)==6) numofT+=1;
-if(p->M1 < GenSize && p->M2 < GenSize && (abs(p->PID) == 11 || abs(p->PID) == 13 || abs(p->PID) == 15)) lepvec.push_back(*p);
-}
-//now modify lepton vector
-if(lepvec.size()==2){
-if(lepvec.at(0).P4().DeltaR(lepvec.at(1).P4())<=0.8) lepvec.erase(lepvec.begin()+1);
-}
-if(numofT==2 && lepvec.size()==0) return true;
-return false;
-}//end of TTdiLep
+  if(bg_=="TTdiLep"){
+    int GenSize = pvec.size();
+    int numofT=0;//this will determine how many T or Tbar exist in the event.
+    vector<GenParticle> lepvec;//this will determine how many lepton exist in the event
+    for(int i = 0; i < GenSize; ++i){
+      GenParticle * p = &pvec.at(i);
+      if(fabs(p->PID)==6) numofT+=1;
+      if(p->M1 < GenSize && p->M2 < GenSize 
+	 && (abs(p->PID) == 11 || abs(p->PID) == 13 || abs(p->PID) == 15)) lepvec.push_back(*p);
+    }
+    //now modify lepton vector
+    if(lepvec.size()==2){
+      if(lepvec.at(0).P4().DeltaR(lepvec.at(1).P4())<=0.8) lepvec.erase(lepvec.begin()+1);
+    }
+    if(numofT==2 && lepvec.size()==2) return true;
+    return false;
+  }//end of TTdiLep
+  
+  if(bg_=="TThadronic"){
+    int GenSize = pvec.size();
+    int numofT=0;//this will determine how many T or Tbar exist in the event.
+    vector<GenParticle> lepvec;//this will determine how many lepton exist in the event
+    for(int i = 0; i < GenSize; ++i){
+      GenParticle * p = &pvec.at(i);
+      if(fabs(p->PID)==6) numofT+=1;
+      if(p->M1 < GenSize && p->M2 < GenSize 
+	 && (abs(p->PID) == 11 || abs(p->PID) == 13 || abs(p->PID) == 15)) lepvec.push_back(*p);
+    }
+    //now modify lepton vector
+    if(lepvec.size()==2){
+      if(lepvec.at(0).P4().DeltaR(lepvec.at(1).P4())<=0.8) lepvec.erase(lepvec.begin()+1);
+    }
+    if(numofT==2 && lepvec.size()==0) return true;
+    return false;
+  }//end of TTdiLep
 
 
 } //end of function bg_type
 
-//
+///
 bool METMHTAsys(string PileUp ,MissingET* met,vector<Jet> jetvec,vector<Muon> muonvec,vector<Electron> electronvec,vector<Photon> photonvec){
   double Met=-99;
   double METAsys=-99;
@@ -317,6 +326,7 @@ class mainClass{
   float xs, xserr;
   double weight, CrossSection, CrossSectionError, totPx, totPy, HT, MHT, cutHT, cutMHT, pt, coss, sinn;
   vector<vector<double> > vecjvec, vecelecvec, vecmuvec;
+  //vector<TLorentzVector> vecjvec, vecelecvec, vecmuvec;
   vector<double> jvec, elecvec, muvec;
   vector<Jet*> tauvec;  
   vector<GenParticle> GenParticlevec;
@@ -347,41 +357,46 @@ class mainClass{
 
   //define different cuts here
   bool nolep(){if(vecelecvec.size()==0 && vecmuvec.size()==0 && tauvec.size()==0)return true; return false;} 
-  bool dphi(){if(delphijj(vecjvec[0],vecjvec[1])<2.5)return true; return false;}
+  bool dphi(){//KH if(delphijj(vecjvec[0],vecjvec[1])<2.5)return true; return false;
+    if (vecjvec.size()>=2) { if(delphijj(vecjvec[0],vecjvec[1])<2.5)return true; return false;} 
+    else { return true;} //KH: when there is only one jet, we still want to maintain such event.
+  }
   bool threejet(){if(vecjvec.size() <=2 )return true; return false;}
-  bool jetone(){if(vecjvec[0][1]>110 && fabs(vecjvec[0][3])<2.4)return true; return false;}
-  bool jettwo(){if(vecjvec[0][1]>60 && fabs(vecjvec[0][3])<4.5)return true; return false;}
+  bool jetone(){ //KH if(vecjvec[0][1]>110 && fabs(vecjvec[0][3])<2.4)return true; return false;
+    if (vecjvec.size()==0) return false; //KH: if there is no jet, veto the event.
+    else {if(vecjvec[0][1]>110 && fabs(vecjvec[0][3])<2.4)return true; return false;} //KH: leading jet cut 
+  }
+  //KH bool jettwo(){if(vecjvec[0][1]>60 && fabs(vecjvec[0][3])<4.5)return true; return false;}
+  bool jettwo(){return true;} //KH: 2nd jet is optinal, so effectively no event shoudl be rejected.  
   bool MET(){if(met->MET > 250)return true; return false;}
-  bool pt250(){if(vecjvec[0][1]>250)return true; return false;}
-  bool pt300(){if(vecjvec[0][1]>300)return true; return false;}
-  bool pt350(){if(vecjvec[0][1]>350)return true; return false;}
-  bool pt400(){if(vecjvec[0][1]>400)return true; return false;}
-  bool pt450(){if(vecjvec[0][1]>450)return true; return false;}
-  bool pt500(){if(vecjvec[0][1]>500)return true; return false;}
-  bool pt600(){if(vecjvec[0][1]>600)return true; return false;}
-  bool pt700(){if(vecjvec[0][1]>700)return true; return false;}
-  bool pt800(){if(vecjvec[0][1]>800)return true; return false;}
-  bool pt900(){if(vecjvec[0][1]>900)return true; return false;}
-  bool pt1000(){if(vecjvec[0][1]>1000)return true; return false;}
-  bool pt1100(){if(vecjvec[0][1]>1100)return true; return false;}
-  bool pt1200(){if(vecjvec[0][1]>1200)return true; return false;}
-  bool pt1300(){if(vecjvec[0][1]>1300)return true; return false;}
-  bool pt1400(){if(vecjvec[0][1]>1400)return true; return false;}
-  bool pt1500(){if(vecjvec[0][1]>1500)return true; return false;}
+  bool pt250(){if(vecjvec.size()>0){if(vecjvec[0][1]>250)return true; return false;}return false;}
+  bool pt300(){if(vecjvec.size()>0){if(vecjvec[0][1]>300)return true; return false;}return false;}
+  bool pt350(){if(vecjvec.size()>0){if(vecjvec[0][1]>350)return true; return false;}return false;}
+  bool pt400(){if(vecjvec.size()>0){if(vecjvec[0][1]>400)return true; return false;}return false;}
+  bool pt450(){if(vecjvec.size()>0){if(vecjvec[0][1]>450)return true; return false;}return false;}
+  bool pt500(){if(vecjvec.size()>0){if(vecjvec[0][1]>500)return true; return false;}return false;}
+  bool pt600(){if(vecjvec.size()>0){if(vecjvec[0][1]>600)return true; return false;}return false;}
+  bool pt700(){if(vecjvec.size()>0){if(vecjvec[0][1]>700)return true; return false;}return false;}
+  bool pt800(){if(vecjvec.size()>0){if(vecjvec[0][1]>800)return true; return false;}return false;}
+  bool pt900(){if(vecjvec.size()>0){if(vecjvec[0][1]>900)return true; return false;}return false;}
+  bool pt1000(){if(vecjvec.size()>0){if(vecjvec[0][1]>1000)return true; return false;}return false;}
+  bool pt1100(){if(vecjvec.size()>0){if(vecjvec[0][1]>1100)return true; return false;}return false;}
+  bool pt1200(){if(vecjvec.size()>0){if(vecjvec[0][1]>1200)return true; return false;}return false;}
+  bool pt1300(){if(vecjvec.size()>0){if(vecjvec[0][1]>1300)return true; return false;}return false;}
+  bool pt1400(){if(vecjvec.size()>0){if(vecjvec[0][1]>1400)return true; return false;}return false;}
+  bool pt1500(){if(vecjvec.size()>0){if(vecjvec[0][1]>1500)return true; return false;}return false;}
 
-
-
-//  bool threejet(){if(vecjvec.size() >= 3 && vecjvec[0][1]> 50 )return true; return false;}
-//  bool ht(){if(HT>=500) return true; return false;}
-//  bool mht(){if(MHT>=200)return true; return false;}
- // bool dphi(){if(delphi(vecjvec[0],totPx,totPy,MHT)>0.5 && delphi(vecjvec[1],totPx,totPy,MHT)>0.5 && delphi(vecjvec[2],totPx,totPy,MHT)>0.3)return true; return false;}
- // bool nolep(){if(vecelecvec.size()==0 && vecmuvec.size()==0)return true; return false;}
-//  bool nopho(){if(phovec.size()==0)return true; return false;}
-//  bool fourjet(){if(vecjvec.size() >= 4)return true; return false;}
-//  bool fivejet(){if(vecjvec.size() >= 5)return true; return false;}
-//  bool sixjet(){if(vecjvec.size() >= 6)return true; return false;}
-//  bool highMht(){if(MHT>=1000)return true; return false;}
-//  bool highHt(){if(HT>=2500)return true; return false;}
+  //  bool threejet(){if(vecjvec.size() >= 3 && vecjvec[0][1]> 50 )return true; return false;}
+  //  bool ht(){if(HT>=500) return true; return false;}
+  //  bool mht(){if(MHT>=200)return true; return false;}
+  // bool dphi(){if(delphi(vecjvec[0],totPx,totPy,MHT)>0.5 && delphi(vecjvec[1],totPx,totPy,MHT)>0.5 && delphi(vecjvec[2],totPx,totPy,MHT)>0.3)return true; return false;}
+  // bool nolep(){if(vecelecvec.size()==0 && vecmuvec.size()==0)return true; return false;}
+  //  bool nopho(){if(phovec.size()==0)return true; return false;}
+  //  bool fourjet(){if(vecjvec.size() >= 4)return true; return false;}
+  //  bool fivejet(){if(vecjvec.size() >= 5)return true; return false;}
+  //  bool sixjet(){if(vecjvec.size() >= 6)return true; return false;}
+  //  bool highMht(){if(MHT>=1000)return true; return false;}
+  //  bool highHt(){if(HT>=2500)return true; return false;}
   //Reference: Ben
   //there are jets missing in the event, which cause much larger MHT than expected. In order to supress this problem,
   bool Asys(){if(METMHTAsys(Pileup_,met,jetvec,muonvec,electronvec,photonvec))return true; return false;}
@@ -391,12 +406,36 @@ class mainClass{
   bool checkcut(string ss){ 
     if(ss == cutname[0])return true;
     if(ss== cutname[1]) {if(Asys())return true;}
-   if(ss== cutname[2]) {if(Asys()&&nolep())return true;}
-   if(ss== cutname[3]) {if(Asys()&&nolep()&&dphi())return true;}
-   if(ss== cutname[4]) {if(Asys()&&nolep()&&dphi()&&threejet())return true;}
-   if(ss== cutname[5]) {if(Asys()&&nolep()&&dphi()&&threejet()&&jetone())return true;}
-   if(ss== cutname[6]) {if(Asys()&&nolep()&&dphi()&&threejet()&&jetone()&&jettwo())return true;}
-   if(ss== cutname[7]) {if(Asys()&&nolep()&&dphi()&&threejet()&&jetone()&&jettwo()&&MET())return true;}
+    if(ss== cutname[2]) {if(Asys()&&jetone())return true;}
+    if(ss== cutname[3]) {if(Asys()&&jetone()&&jettwo())return true;}
+    if(ss== cutname[4]) {if(Asys()&&jetone()&&jettwo()&&threejet())return true;}
+    if(ss== cutname[5]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi())return true;}
+    if(ss== cutname[6]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep())return true;}
+    if(ss== cutname[7]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET())return true;}
+    if(ss== cutname[8]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt250())return true;}
+    if(ss== cutname[9]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt300())return true;}
+    if(ss== cutname[10]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt350())return true;}
+    if(ss== cutname[11]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt400())return true;}
+    if(ss== cutname[12]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt450())return true;}
+    if(ss== cutname[13]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt500())return true;}
+    if(ss== cutname[14]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt600())return true;}
+    if(ss== cutname[15]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt700())return true;}
+    if(ss== cutname[16]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt800())return true;}
+    if(ss== cutname[17]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt900())return true;}
+    if(ss== cutname[18]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1000())return true;}
+    if(ss== cutname[19]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1100())return true;}
+    if(ss== cutname[20]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1200())return true;}
+    if(ss== cutname[21]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1300())return true;}
+    if(ss== cutname[22]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1400())return true;}
+    if(ss== cutname[23]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1500())return true;}
+    //KH
+    /*
+    if(ss== cutname[2]) {if(Asys()&&nolep())return true;}
+    if(ss== cutname[3]) {if(Asys()&&nolep()&&dphi())return true;}
+    if(ss== cutname[4]) {if(Asys()&&nolep()&&dphi()&&threejet())return true;}
+    if(ss== cutname[5]) {if(Asys()&&nolep()&&dphi()&&threejet()&&jetone())return true;}
+    if(ss== cutname[6]) {if(Asys()&&nolep()&&dphi()&&threejet()&&jetone()&&jettwo())return true;}
+    if(ss== cutname[7]) {if(Asys()&&nolep()&&dphi()&&threejet()&&jetone()&&jettwo()&&MET())return true;}
     if(ss== cutname[8]) {if(Asys()&&nolep()&&dphi()&&threejet()&&jetone()&&jettwo()&&MET()&&pt250())return true;}
     if(ss== cutname[9]) {if(Asys()&&nolep()&&dphi()&&threejet()&&jetone()&&jettwo()&&MET()&&pt300())return true;}
     if(ss== cutname[10]){if(Asys()&&nolep()&&dphi()&&threejet()&&jetone()&&jettwo()&&MET()&&pt350())return true;}
@@ -413,8 +452,7 @@ class mainClass{
     if(ss== cutname[21]){if(Asys()&&nolep()&&dphi()&&threejet()&&jetone()&&jettwo()&&MET()&&pt1300())return true;}
     if(ss== cutname[22]){if(Asys()&&nolep()&&dphi()&&threejet()&&jetone()&&jettwo()&&MET()&&pt1400())return true;}
     if(ss== cutname[23]){if(Asys()&&nolep()&&dphi()&&threejet()&&jetone()&&jettwo()&&MET()&&pt1500())return true;}
-  
-
+    */
 
     return false; 
   }
@@ -423,12 +461,12 @@ class mainClass{
 public:
   mainClass(string Pileup, string Process, string Detector, string Outdir, string inputnumber){
     Pileup_ = Pileup;
-    terminator=0; CrossSection=-999.0; CrossSectionError=0.0; totPx=0;desirednumeve=-999; totPy=0; HT=0; MHT=0; cutHT=0; cutMHT=0; pt=0; coss=0; sinn=0;
+    terminator=1; CrossSection=-999.0; CrossSectionError=0.0; totPx=0;desirednumeve=-999; totPy=0; HT=0; MHT=0; cutHT=0; cutMHT=0; pt=0; coss=0; sinn=0;
   
-/////Here you should determine howmany events you need. If you need all the events, please comment this out. 
-//  desirednumeve = 10000;
+    /////Here you should determine howmany events you need. If you need all the events, please comment this out. 
+    //  desirednumeve = 10000;
   
-  TChain chain("Delphes");
+    TChain chain("Delphes");
     // Create object of class ExRootTreeReader
     ExRootTreeReader *treeReader = new ExRootTreeReader(&chain);
 
@@ -450,14 +488,15 @@ public:
     }
 
     //
-    //initialize a map between string=cutnames and histvecs. copy one histvec into all of them. The histograms, though, will be filled differently.
+    //Initialize a map between string=cutnames and histvecs. copy one histvec into all of them. 
+    //The histograms, though, will be filled differently.
     cutname[0]="nocut";
     cutname[1]="Asys";
-    cutname[2]="nolep";
-    cutname[3]="delphi";
+    cutname[2]="jetone";
+    cutname[3]="jettwo";
     cutname[4]="3jet";
-    cutname[5]="jetone";
-    cutname[6]="jettwo";
+    cutname[5]="dphi";
+    cutname[6]="nolep";
     cutname[7]="MET";
     cutname[8]="pt250";
     cutname[9]="pt300";
@@ -476,10 +515,9 @@ public:
     cutname[22]="pt1400";
     cutname[23]="pt1500";
 
-     for(int i=0; i< cutname.size();i++){
+    for(int i=0; i< cutname.size();i++){
       cut_histvec_map[cutname[i]]=vecTH;
     }
-
 
     ///
     //initialize a map between string and maps. copy the map of histvecs into each
@@ -584,8 +622,8 @@ if(desirednumeve != -999 ){if(desirednumeve < treeReader->GetEntries()) break;}
     //Loop Over all Events//Loop Over all Events//Loop Over all Events//Loop Over all Events//Loop Over all Events//Loop Over all Events//Loop Over all Events/
     //
     for(int entry = 0; entry < treeReader->GetEntries() ; entry++ ){
-          //KH
-   //   if (entry >=10000) break; // Check only the first 10K events for validation purpose
+      //KH
+      //KH if (entry >=10000) break; // Check only the first 10K events for validation purpose
       
       treeReader->ReadEntry(entry);
 
@@ -610,7 +648,8 @@ if(desirednumeve != -999 ){if(desirednumeve < treeReader->GetEntries()) break;}
 	  GenParticlevec.push_back(*particle);
 
 	}//end of loop over "particles in history" 
-          //////////////////loop over photons and load them to a vector
+
+      //////////////////loop over photons and load them to a vector
       photonvec.clear();
       for (int i = 0; i < branchPhoton->GetEntries(); ++i)
 	{
@@ -620,8 +659,8 @@ if(desirednumeve != -999 ){if(desirednumeve < treeReader->GetEntries()) break;}
 	  photonvec.push_back(*pho);
 	}
 
-///here we load photons to another vector for another study
-phovec.clear();
+      ///here we load photons to another vector for another study
+      phovec.clear();
       for (int i = 0; i < branchPhoton->GetEntries(); ++i)
         {
           Photon* pho = (Photon*)branchPhoton->At(i);
@@ -678,26 +717,25 @@ phovec.clear();
 	    }
 	  ////end of loop over muons
 	}
-///loading tau to a vector. Unlike electron and muon there is no class for tau in Delphes. We need to 
-tauvec.clear();
-for(int i = 0; i < branchJet->GetEntries(); ++i){
-      Jet* jet = (Jet*) branchJet->At(i);
-      if(jet->TauTag==true && jet->PT >20 && fabs(jet->Eta)< 2.3){
-tauvec.push_back(jet);
-}
-}
-//cout << " tauSize " << tauvec.size() << endl;
-//if(tauvec.size()>0){cout << " tau->pt: " << tauvec[0]->PT << endl;}
 
-/*int genTaunum=0;
-for(int i = 0; i < (int)(GenParticlevec.size()); ++i){
-GenParticle * pa = &GenParticlevec.at(i);
-if(fabs(pa->PID)==15){genTaunum+=1;}
-    }
- cout << "genTaunum: " << genTaunum << endl;
-  */
+      ///loading tau to a vector. Unlike electron and muon there is no class for tau in Delphes. We need to 
+      tauvec.clear();
+      for(int i = 0; i < branchJet->GetEntries(); ++i){
+	Jet* jet = (Jet*) branchJet->At(i);
+	if(jet->TauTag==true && jet->PT >20 && fabs(jet->Eta)< 2.3){
+	  tauvec.push_back(jet);
+	}
+      }
+      //cout << " tauSize " << tauvec.size() << endl;
+      //if(tauvec.size()>0){cout << " tau->pt: " << tauvec[0]->PT << endl;}
 
-
+      /*int genTaunum=0;
+	for(int i = 0; i < (int)(GenParticlevec.size()); ++i){
+	GenParticle * pa = &GenParticlevec.at(i);
+	if(fabs(pa->PID)==15){genTaunum+=1;}
+	}
+	cout << "genTaunum: " << genTaunum << endl;
+      */
 
       ///making the values zero for each event
       totPx=0;
@@ -722,6 +760,12 @@ if(fabs(pa->PID)==15){genTaunum+=1;}
 	//  * fraction > 90% (mostly jet from the lepton), remove this jet
 	//  * fraction < 90%: additional energy from pileup, just correct this jet by
 	//  removing the lepton energy
+
+	//KH: thought this adjustment to jet 4-momentum was no longer necessary.
+	//    it was meant for early version of delphes, where identified leptons
+	//    were still included in jets, which lead to double-counting.
+
+	/*
 	for (int i = 0; i < muonvec.size(); ++i){
 	  Muon muon = muonvec.at(i);
 	  if (jet->P4().DeltaR(muon.P4()) < 0.4){tempLorvec += muon.P4();}
@@ -745,12 +789,14 @@ if(fabs(pa->PID)==15){genTaunum+=1;}
 	  tempLorvec = (jet->P4().Dot(tempLorvec))/(jet->P4().Dot(jet->P4())) * jet->P4();  
 	  
 	  jet->P4() = jet->P4() - tempLorvec;
+	  jet->P4() = jet->P4();
 	  jet->PT  =  jet->P4().Pt();
 	  jet->Eta =  jet->P4().Eta();
 	  jet->Phi  = jet->P4().Phi();
 	  jet->Mass = jet->P4().M();
-	  
+
 	}
+	*/
 
 	sinn = (double) sin(jet->Phi);
 	coss = (double) cos(jet->Phi);
@@ -769,24 +815,28 @@ if(fabs(pa->PID)==15){genTaunum+=1;}
 	    jvec.push_back((double)jet->Eta);
 	    vecjvec.push_back(jvec);
 	    ///calculate HT
-	   // HT+=pt;
+	    // HT+=pt;
 	    /// end of if over pt and eta for HT
 	  }
 
-/*	//// for MHT we want events with all jets pt > 30 and |eta|< 5
-	if(pt>30 && jet->Eta < 5 && jet->Eta > (-5))
+	/*	//// for MHT we want events with all jets pt > 30 and |eta|< 5
+	  if(pt>30 && jet->Eta < 5 && jet->Eta > (-5))
 	  {
-	    ///calculate total jet-px and jet-py
-	    totPx += pt * coss;  
-	    totPy += pt * sinn;
-	    ///end of if over pt and eta for MHT
+	  ///calculate total jet-px and jet-py
+	  totPx += pt * coss;  
+	  totPy += pt * sinn;
+	  ///end of if over pt and eta for MHT
 	  } */
       }///////////////////////////////////////////////////////////////////end of loop over jets
+      //KH std::cout << "aaa: " << entry << std::endl;
 
-///some times the jet vector is empty. To avoid segmentation violation we initialize the vector and set all values to zero
-vector<double> nullvec (4,0.0); ///this is a vector with 4 zeros. (0,0,0,0)
-if(vecjvec.size()==0){vecjvec.push_back(nullvec);vecjvec.push_back(nullvec);}
-if(vecjvec.size()==1){vecjvec.push_back(nullvec);}
+      ///some times the jet vector is empty. To avoid segmentation violation we initialize the vector and set all values to zero
+      //KH: this will make vecjvec.size() unusable. comment out the following three lines
+      /*
+      vector<double> nullvec (4,0.0); ///this is a vector with 4 zeros. (0,0,0,0)
+      if(vecjvec.size()==0){vecjvec.push_back(nullvec);vecjvec.push_back(nullvec);}
+      if(vecjvec.size()==1){vecjvec.push_back(nullvec);}
+      */
 
       ///find the three most energetic jets
       while(terminator!=0){
@@ -802,13 +852,20 @@ if(vecjvec.size()==1){vecjvec.push_back(nullvec);}
 	//end of the while
       }
       ///end of find the three most energetic jets
-
+      //KH std::cout << "bbb: " << entry << std::endl;
          
       ///calculate MHT
       MHT = sqrt( totPx*totPx + totPy*totPy );
-           //build an array that contains the quantities we need a histogram for. Here order is important and must be the same as nocutvec
-//cout << "lepton.size()" << tauvec.size()+vecmuvec.size()+vecelecvec.size() << endl;
-      double eveinfvec[] = {weight, met->MET , vecjvec[0][1], vecjvec.size(),(tauvec.size()+vecmuvec.size()+vecelecvec.size()) }; 
+      //build an array that contains the quantities we need a histogram for. Here order is important and must be the same as nocutvec
+      //cout << "lepton.size()" << tauvec.size()+vecmuvec.size()+vecelecvec.size() << endl;
+      double ptjet1=-1.; if (vecjvec.size()) ptjet1=vecjvec[0][1]; //  
+      double eveinfvec[] = {
+	weight, 
+	met->MET , 
+	ptjet1, //KH vecjvec[0][1], 
+	vecjvec.size(),
+	(tauvec.size()+vecmuvec.size()+vecelecvec.size())
+      }; 
 
       //loop over all the different event types: "allEvents", "Wlv", "Zvv"
       for(map<string, map<string , vector<TH1D> > >::iterator itt=map_map.begin(); itt!=map_map.end();itt++){//this will be terminated after the cuts
