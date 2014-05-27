@@ -285,16 +285,11 @@ bool bg_type(string bg_ ,vector<GenParticle> pvec){
 } //end of function bg_type
 
 ///
-bool METMHTAsys(string PileUp ,MissingET* met,vector<Jet> jetvec,vector<Muon> muonvec,vector<Electron> electronvec,vector<Photon> photonvec){
+double  METMHTAsys(MissingET* met,vector<Jet> jetvec,vector<Muon> muonvec,vector<Electron> electronvec,vector<Photon> photonvec){
   double Met=-99;
   double METAsys=-99;
-  double AsysCut = -99;
   TVector2 PUCorMet, RawMet;
-  if (PileUp == "NoPileUp") AsysCut = 0.2;
-  if (PileUp == "50PileUp") AsysCut = 0.3;
-  if (PileUp == "140PileUp") AsysCut = 0.5;
-  assert(AsysCut != -99.);
-  TLorentzVector allvecsum;
+   TLorentzVector allvecsum;
   allvecsum.SetPxPyPzE(0, 0, 0, 0);
   PUCorMet.Set(0., 0.);
   RawMet.Set(0.0, 0.0);
@@ -312,7 +307,7 @@ bool METMHTAsys(string PileUp ,MissingET* met,vector<Jet> jetvec,vector<Muon> mu
   //cout << "......................RawMet.Mod(): " << RawMet.Mod() << endl;
   //cout << "...................... Met: " << Met << endl; 
   //cout << "...................... METAsys: " << METAsys << endl;
-  return METAsys < AsysCut;
+  return METAsys;
 
 }
 
@@ -399,7 +394,13 @@ class mainClass{
   //  bool highHt(){if(HT>=2500)return true; return false;}
   //Reference: Ben
   //there are jets missing in the event, which cause much larger MHT than expected. In order to supress this problem,
-  bool Asys(){if(METMHTAsys(Pileup_,met,jetvec,muonvec,electronvec,photonvec))return true; return false;}
+  bool Asys(){
+double AsysCut = -99;
+ if (Pileup_ == "NoPileUp") AsysCut = 0.2;
+  if (Pileup_ == "50PileUp") AsysCut = 0.3;
+  if (Pileup_ == "140PileUp") AsysCut = 0.5;
+  assert(AsysCut != -99.);
+if(METMHTAsys(met,jetvec,muonvec,electronvec,photonvec) < AsysCut )return true; return false;}
   //KH bool Asys(){return true;}
 
   //function checkcut()
@@ -464,7 +465,7 @@ public:
     terminator=1; CrossSection=-999.0; CrossSectionError=0.0; totPx=0;desirednumeve=-999; totPy=0; HT=0; MHT=0; cutHT=0; cutMHT=0; pt=0; coss=0; sinn=0;
   
     /////Here you should determine howmany events you need. If you need all the events, please comment this out. 
-    //  desirednumeve = 10000;
+      desirednumeve = 10000;
   
     TChain chain("Delphes");
     // Create object of class ExRootTreeReader
