@@ -44,7 +44,7 @@ public:
     a = eveinfarr_;
     b_hist=hist_;
     (*b_hist).Fill(*a);
-    for(int i=1; i<=4 ; i++){
+    for(int i=1; i<=17; i++){
       (*(b_hist+i)).Fill(*(a+i),*a);
     }
   }
@@ -112,7 +112,7 @@ bool bg_type(string bg_ ,vector<GenParticle> pvec){
 	    vvvec.push_back(pp->PID);
 	  }//end of if pp->PID == 12, 14, 16 = nutrinos
 	}//end of second loop
-	if(vvvec.size()==2){
+	if((int)vvvec.size()==2){
 	  return true;}//end of if 
       }//end of if PID==23=Z boson
     }//end of loop
@@ -132,7 +132,7 @@ bool bg_type(string bg_ ,vector<GenParticle> pvec){
 	    vvvec.push_back(pp->PID);
 	  }//end of if pp->PID == 11, 13 15 = leptons
 	}//end of second loop
-	if(vvvec.size()==2){
+	if((int)vvvec.size()==2){
 	  return true;}//end of if 
       }//end of if PID==23=Z boson
     }//end of loop
@@ -160,7 +160,7 @@ bool bg_type(string bg_ ,vector<GenParticle> pvec){
 	  }//end of if pp->PID == 12, 14, 16 = neutrino
 
 	}//end of second loop
-	if(vvvec.size()==2 || llvec.size()==2){
+	if((int)vvvec.size()==2 || (int)llvec.size()==2){
 	  return false;}else return true;//end of if 
       }//end of if PID==23=Z boson
     }//end of loop
@@ -188,7 +188,7 @@ bool bg_type(string bg_ ,vector<GenParticle> pvec){
 	    llvec.push_back(ppa->PID);
 	  }//end of if ppa->PID == 11, 13, 15 = electron , muon, tau
 	}//end of second loop
-	if(llvec.size()==1){//llvec.size() ==1 since W decays to one lepton and one nutrino
+	if((int)llvec.size()==1){//llvec.size() ==1 since W decays to one lepton and one nutrino
 	  return true;}//end of if 
       }//end of if PID==24=W boson
     }//end of loop
@@ -208,7 +208,7 @@ bool bg_type(string bg_ ,vector<GenParticle> pvec){
 	    llvec.push_back(ppa->PID);
 	  }//end of if ppa->PID == 11, 13, 15 = electron , muon, tau
 	}//end of second loop
-	if(llvec.size()==1){//llvec.size() ==1 since W decays to one lepton and one nutrino
+	if((int)llvec.size()==1){//llvec.size() ==1 since W decays to one lepton and one nutrino
 	  return false;}else return true;//end of if 
       }//end of if PID==24=W boson
     }//end of loop
@@ -228,7 +228,7 @@ bool bg_type(string bg_ ,vector<GenParticle> pvec){
 
   ///These following functions make sense only if the leptons in the event are coming from TTbar. If there are TTbar and leptons not from TTbar in the events this function still consider the leptons are coming from TTbar. There are many solutions for this. But since currently we are only dealing with TTbar events these are good.  
   if(bg_=="TTSingLep"){
-    int GenSize = pvec.size();
+    int GenSize = (int)pvec.size();
     int numofT=0;//this will determine how many T or Tbar exist in the event.
     vector<GenParticle> lepvec;//this will determine how many lepton exist in the event
     for(int i = 0; i < GenSize; ++i){
@@ -238,10 +238,10 @@ bool bg_type(string bg_ ,vector<GenParticle> pvec){
 	 && (abs(p->PID) == 11 || abs(p->PID) == 13 || abs(p->PID) == 15)) lepvec.push_back(*p);
     }
     //now modify lepton vector
-    if(lepvec.size()==2){
+    if((int)lepvec.size()==2){
       if(lepvec.at(0).P4().DeltaR(lepvec.at(1).P4())<=0.8) lepvec.erase(lepvec.begin()+1);
     }
-    if(numofT==2 && lepvec.size()==1) return true;
+    if((int)numofT==2 && (int)lepvec.size()==1) return true;
     return false;
   }//end of TTSingLep
 
@@ -256,15 +256,15 @@ bool bg_type(string bg_ ,vector<GenParticle> pvec){
 	 && (abs(p->PID) == 11 || abs(p->PID) == 13 || abs(p->PID) == 15)) lepvec.push_back(*p);
     }
     //now modify lepton vector
-    if(lepvec.size()==2){
+    if((int)lepvec.size()==2){
       if(lepvec.at(0).P4().DeltaR(lepvec.at(1).P4())<=0.8) lepvec.erase(lepvec.begin()+1);
     }
-    if(numofT==2 && lepvec.size()==2) return true;
+    if(numofT==2 && (int)lepvec.size()==2) return true;
     return false;
   }//end of TTdiLep
   
   if(bg_=="TThadronic"){
-    int GenSize = pvec.size();
+    int GenSize = (int)pvec.size();
     int numofT=0;//this will determine how many T or Tbar exist in the event.
     vector<GenParticle> lepvec;//this will determine how many lepton exist in the event
     for(int i = 0; i < GenSize; ++i){
@@ -274,10 +274,10 @@ bool bg_type(string bg_ ,vector<GenParticle> pvec){
 	 && (abs(p->PID) == 11 || abs(p->PID) == 13 || abs(p->PID) == 15)) lepvec.push_back(*p);
     }
     //now modify lepton vector
-    if(lepvec.size()==2){
+    if((int)lepvec.size()==2){
       if(lepvec.at(0).P4().DeltaR(lepvec.at(1).P4())<=0.8) lepvec.erase(lepvec.begin()+1);
     }
-    if(numofT==2 && lepvec.size()==0) return true;
+    if(numofT==2 && (int)lepvec.size()==0) return true;
     return false;
   }//end of TTdiLep
 
@@ -294,10 +294,10 @@ double  METMHTAsys(MissingET* met,vector<Jet> jetvec,vector<Muon> muonvec,vector
   PUCorMet.Set(0., 0.);
   RawMet.Set(0.0, 0.0);
   
-  for(int i=0; i<jetvec.size(); i++) {allvecsum += jetvec.at(i).P4();}
-  for(int j=0; j<muonvec.size(); j++) {allvecsum += muonvec.at(j).P4();}
-  for(int k=0; k<electronvec.size(); k++) {allvecsum += electronvec.at(k).P4();}
-  for(int l=0; l<photonvec.size(); l++) {allvecsum += photonvec.at(l).P4();}
+  for(int i=0; i<(int)jetvec.size(); i++) {allvecsum += jetvec.at(i).P4();}
+  for(int j=0; j<(int)muonvec.size(); j++) {allvecsum += muonvec.at(j).P4();}
+  for(int k=0; k<(int)electronvec.size(); k++) {allvecsum += electronvec.at(k).P4();}
+  for(int l=0; l<(int)photonvec.size(); l++) {allvecsum += photonvec.at(l).P4();}
 
   PUCorMet.Set(-allvecsum.Px(),-allvecsum.Py());
   Met= PUCorMet.Mod();
@@ -351,35 +351,35 @@ class mainClass{
   TLorentzVector tempLorvec;
 
   //define different cuts here
-  bool nolep(){if(vecelecvec.size()==0 && vecmuvec.size()==0 && tauvec.size()==0)return true; return false;} 
+  bool nolep(){if((int)vecelecvec.size()==0 && (int)vecmuvec.size()==0 && (int)tauvec.size()==0)return true; return false;} 
   bool dphi(){//KH if(delphijj(vecjvec[0],vecjvec[1])<2.5)return true; return false;
-    if (vecjvec.size()>=2) { if(delphijj(vecjvec[0],vecjvec[1])<2.5)return true; return false;} 
+    if ((int)vecjvec.size()>=2) { if(delphijj(vecjvec[0],vecjvec[1])<2.5)return true; return false;} 
     else { return true;} //KH: when there is only one jet, we still want to maintain such event.
   }
-  bool threejet(){if(vecjvec.size() <=2 )return true; return false;}
+  bool threejet(){if((int)vecjvec.size() <=2 )return true; return false;}
   bool jetone(){ //KH if(vecjvec[0][1]>110 && fabs(vecjvec[0][3])<2.4)return true; return false;
-    if (vecjvec.size()==0) return false; //KH: if there is no jet, veto the event.
+    if ((int)vecjvec.size()==0) return false; //KH: if there is no jet, veto the event.
     else {if(vecjvec[0][1]>110 && fabs(vecjvec[0][3])<2.4)return true; return false;} //KH: leading jet cut 
   }
   //KH bool jettwo(){if(vecjvec[0][1]>60 && fabs(vecjvec[0][3])<4.5)return true; return false;}
   bool jettwo(){return true;} //KH: 2nd jet is optinal, so effectively no event shoudl be rejected.  
   bool MET(){if(met->MET > 250)return true; return false;}
-  bool pt250(){if(vecjvec.size()>0){if(vecjvec[0][1]>250)return true; return false;}return false;}
-  bool pt300(){if(vecjvec.size()>0){if(vecjvec[0][1]>300)return true; return false;}return false;}
-  bool pt350(){if(vecjvec.size()>0){if(vecjvec[0][1]>350)return true; return false;}return false;}
-  bool pt400(){if(vecjvec.size()>0){if(vecjvec[0][1]>400)return true; return false;}return false;}
-  bool pt450(){if(vecjvec.size()>0){if(vecjvec[0][1]>450)return true; return false;}return false;}
-  bool pt500(){if(vecjvec.size()>0){if(vecjvec[0][1]>500)return true; return false;}return false;}
-  bool pt600(){if(vecjvec.size()>0){if(vecjvec[0][1]>600)return true; return false;}return false;}
-  bool pt700(){if(vecjvec.size()>0){if(vecjvec[0][1]>700)return true; return false;}return false;}
-  bool pt800(){if(vecjvec.size()>0){if(vecjvec[0][1]>800)return true; return false;}return false;}
-  bool pt900(){if(vecjvec.size()>0){if(vecjvec[0][1]>900)return true; return false;}return false;}
-  bool pt1000(){if(vecjvec.size()>0){if(vecjvec[0][1]>1000)return true; return false;}return false;}
-  bool pt1100(){if(vecjvec.size()>0){if(vecjvec[0][1]>1100)return true; return false;}return false;}
-  bool pt1200(){if(vecjvec.size()>0){if(vecjvec[0][1]>1200)return true; return false;}return false;}
-  bool pt1300(){if(vecjvec.size()>0){if(vecjvec[0][1]>1300)return true; return false;}return false;}
-  bool pt1400(){if(vecjvec.size()>0){if(vecjvec[0][1]>1400)return true; return false;}return false;}
-  bool pt1500(){if(vecjvec.size()>0){if(vecjvec[0][1]>1500)return true; return false;}return false;}
+  bool pt250(){if((int)vecjvec.size()>0){if(vecjvec[0][1]>250)return true; return false;}return false;}
+  bool pt300(){if((int)vecjvec.size()>0){if(vecjvec[0][1]>300)return true; return false;}return false;}
+  bool pt350(){if((int)vecjvec.size()>0){if(vecjvec[0][1]>350)return true; return false;}return false;}
+  bool pt400(){if((int)vecjvec.size()>0){if(vecjvec[0][1]>400)return true; return false;}return false;}
+  bool pt450(){if((int)vecjvec.size()>0){if(vecjvec[0][1]>450)return true; return false;}return false;}
+  bool pt500(){if((int)vecjvec.size()>0){if(vecjvec[0][1]>500)return true; return false;}return false;}
+  bool pt600(){if((int)vecjvec.size()>0){if(vecjvec[0][1]>600)return true; return false;}return false;}
+  bool pt700(){if((int)vecjvec.size()>0){if(vecjvec[0][1]>700)return true; return false;}return false;}
+  bool pt800(){if((int)vecjvec.size()>0){if(vecjvec[0][1]>800)return true; return false;}return false;}
+  bool pt900(){if((int)vecjvec.size()>0){if(vecjvec[0][1]>900)return true; return false;}return false;}
+  bool pt1000(){if((int)vecjvec.size()>0){if(vecjvec[0][1]>1000)return true; return false;}return false;}
+  bool pt1100(){if((int)vecjvec.size()>0){if(vecjvec[0][1]>1100)return true; return false;}return false;}
+  bool pt1200(){if((int)vecjvec.size()>0){if(vecjvec[0][1]>1200)return true; return false;}return false;}
+  bool pt1300(){if((int)vecjvec.size()>0){if(vecjvec[0][1]>1300)return true; return false;}return false;}
+  bool pt1400(){if((int)vecjvec.size()>0){if(vecjvec[0][1]>1400)return true; return false;}return false;}
+  bool pt1500(){if((int)vecjvec.size()>0){if(vecjvec[0][1]>1500)return true; return false;}return false;}
 
   //  bool threejet(){if(vecjvec.size() >= 3 && vecjvec[0][1]> 50 )return true; return false;}
   //  bool ht(){if(HT>=500) return true; return false;}
@@ -401,7 +401,8 @@ double AsysCut = -99;
   if (Pileup_ == "140PileUp") AsysCut = 0.5;
   assert(AsysCut != -99.);
 if(METMHTAsys(met,jetvec,muonvec,electronvec,photonvec) < AsysCut )return true; return false;}
-  //KH bool Asys(){return true;}
+
+// bool Asys(){return true;}
 
   //function checkcut()
   bool checkcut(string ss){ 
@@ -462,10 +463,10 @@ if(METMHTAsys(met,jetvec,muonvec,electronvec,photonvec) < AsysCut )return true; 
 public:
   mainClass(string Pileup, string Process, string Detector, string Outdir, string inputnumber){
     Pileup_ = Pileup;
-    terminator=1; CrossSection=-999.0; CrossSectionError=0.0; totPx=0;desirednumeve=-999; totPy=0; HT=0; MHT=0; cutHT=0; cutMHT=0; pt=0; coss=0; sinn=0;
+     CrossSection=-999.0; CrossSectionError=0.0; totPx=0;desirednumeve=-999; totPy=0; HT=0; MHT=0; cutHT=0; cutMHT=0; pt=0; coss=0; sinn=0;
   
     /////Here you should determine howmany events you need. If you need all the events, please comment this out. 
-      desirednumeve = 10000;
+    //  desirednumeve = 10000;
   
     TChain chain("Delphes");
     // Create object of class ExRootTreeReader
@@ -474,14 +475,42 @@ public:
     //build a vector of histograms
     TH1D  weight_hist = TH1D("weight", "Weight Distribution", 5,0,5);
     vecTH.push_back(weight_hist);
+    TH1D  METAsys_hist = TH1D("METAsys","METAsys",100,0,1);
+    vecTH.push_back(METAsys_hist); 
     TH1D  MET_hist =  TH1D("MET","MET Distribution",50,0,5000);
     vecTH.push_back(MET_hist);
-    TH1D  j1Pt_hist =  TH1D("j1Pt","First jet Pt Distribution",50,0,5000);
-    vecTH.push_back(j1Pt_hist);
     TH1D  NJet_hist = TH1D("NJet","Number of Jets Distribution",20,0,20);
     vecTH.push_back(NJet_hist); 
+    TH1D  j1Pt_hist =  TH1D("j1Pt","First jet Pt Distribution",50,0,5000);
+    vecTH.push_back(j1Pt_hist);
+    TH1D  Jet1Eta_hist = TH1D("Jet1Eta","Eta of the first jet",100,-5,5);
+    vecTH.push_back(Jet1Eta_hist);
+    TH1D  Jet1Phi_hist = TH1D("Jet1Phi","Phi of the first jet",50,-3.3,3.3);
+    vecTH.push_back(Jet1Phi_hist);
+    TH1D  j2Pt_hist =  TH1D("j2Pt","Second jet Pt Distribution",50,0,5000);
+    vecTH.push_back(j2Pt_hist);
+    TH1D  Jet2Eta_hist = TH1D("Jet2Eta","Eta of the second jet",100,-5,5);
+    vecTH.push_back(Jet2Eta_hist);
+    TH1D  Jet2Phi_hist = TH1D("Jet2Phi","Phi of the second jet",50,-3.3,3.3);
+    vecTH.push_back(Jet2Phi_hist);
+    TH1D  j3Pt_hist =  TH1D("j3Pt","Third jet Pt Distribution",50,0,5000);
+    vecTH.push_back(j3Pt_hist);
+    TH1D  Jet3Eta_hist = TH1D("Jet3Eta","Eta of the third jet",100,-5,5);
+    vecTH.push_back(Jet3Eta_hist);
+    TH1D  Jet3Phi_hist = TH1D("Jet3Phi","Phi of the third jet",50,-3.3,3.3);
+    vecTH.push_back(Jet3Phi_hist);
+    TH1D  delphi_hist =  TH1D("DelPhij1j2","Delta Phi j1 j2",50,-3.3,3.3);
+    vecTH.push_back(delphi_hist);
     TH1D  NLep_hist = TH1D("NLep","Number of Leptons Distribution",20,0,20);
     vecTH.push_back(NLep_hist);
+    TH1D  NElec_hist = TH1D("NElec","Number of Electrons Distribution",20,0,20);
+    vecTH.push_back(NElec_hist);
+    TH1D  NMuon_hist = TH1D("NMuon","Number of Muons Distribution",20,0,20);
+    vecTH.push_back(NMuon_hist);
+    TH1D  NTau_hist = TH1D("NTau","Number of Taus Distribution",20,0,20);
+    vecTH.push_back(NTau_hist);
+
+
 
     TH1D cutflowhist = TH1D("cutflowhist","Cut Flow", 30,0,30);
     for(map<string, map<string , vector<TH1D> > >::iterator itt=map_map.begin(); itt!=map_map.end();itt++){
@@ -516,7 +545,7 @@ public:
     cutname[22]="pt1400";
     cutname[23]="pt1500";
 
-    for(int i=0; i< cutname.size();i++){
+    for(int i=0; i< (int)cutname.size();i++){
       cut_histvec_map[cutname[i]]=vecTH;
     }
 
@@ -536,7 +565,7 @@ public:
     eventType[11]="TTSingLep";
     eventType[12]="TTdiLep";
     eventType[13]="TThadronic";
-    for(int i=0; i< eventType.size();i++){
+    for(int i=0; i< (int)eventType.size();i++){
       map_map[eventType[i]]=cut_histvec_map;
     }
     //KH
@@ -840,18 +869,19 @@ if(desirednumeve != -999 ){if(desirednumeve < treeReader->GetEntries()) break;}
       */
 
       ///find the three most energetic jets
+      terminator=1;
       while(terminator!=0){
 	terminator=0;
-	for(int iv=0; iv<vecjvec.size()-1;iv++){
+	for(int iv=0; iv<((int)vecjvec.size()-1);iv++){
 	  
 	  if(vecjvec[iv][1]<vecjvec[iv+1][1]){
 	    swap(vecjvec[iv],vecjvec[iv+1]);
 	    terminator+=1;
-	  }
+	  } 
 	  //end of the for
-	}
+}
 	//end of the while
-      }
+      } 
       ///end of find the three most energetic jets
       //KH std::cout << "bbb: " << entry << std::endl;
          
@@ -859,14 +889,31 @@ if(desirednumeve != -999 ){if(desirednumeve < treeReader->GetEntries()) break;}
       MHT = sqrt( totPx*totPx + totPy*totPy );
       //build an array that contains the quantities we need a histogram for. Here order is important and must be the same as nocutvec
       //cout << "lepton.size()" << tauvec.size()+vecmuvec.size()+vecelecvec.size() << endl;
-      double ptjet1=-1.; if (vecjvec.size()) ptjet1=vecjvec[0][1]; //  
-      double eveinfvec[] = {
-	weight, 
-	met->MET , 
-	ptjet1, //KH vecjvec[0][1], 
-	vecjvec.size(),
-	(tauvec.size()+vecmuvec.size()+vecelecvec.size())
-      }; 
+double ptjet1=-99., phijet1=-99., etajet1=-99.; if((int)vecjvec.size()>0){ptjet1=vecjvec[0][1];phijet1=vecjvec[0][2];etajet1=vecjvec[0][3];} //  
+double ptjet2=-99., phijet2=-99., etajet2=-99.; if((int)vecjvec.size()>1){ptjet2=vecjvec[1][1];phijet2=vecjvec[1][2];etajet2=vecjvec[1][3];}    
+double ptjet3=-99., phijet3=-99., etajet3=-99.; if((int)vecjvec.size()>2){ptjet3=vecjvec[2][1];phijet3=vecjvec[2][2];etajet3=vecjvec[2][3];}
+double delphij1j2=-99.;if((int)vecjvec.size()>1){delphij1j2 = delphijj(vecjvec[0],vecjvec[1]);}
+///Important: here order is sensitive. The order must be the same as that of histograms in vecTH.
+double eveinfvec[] = {
+weight, 
+METMHTAsys(met,jetvec,muonvec,electronvec,photonvec),              
+met->MET , 
+vecjvec.size(),
+ptjet1, //KH vecjvec[0][1], 
+etajet1,
+phijet1,
+ptjet2,  
+etajet2,
+phijet2,
+ptjet3,                    
+etajet3,
+phijet3,
+delphij1j2,
+(tauvec.size()+vecmuvec.size()+vecelecvec.size()),
+vecelecvec.size(),
+vecmuvec.size(),
+tauvec.size()
+ }; 
 
       //loop over all the different event types: "allEvents", "Wlv", "Zvv"
       for(map<string, map<string , vector<TH1D> > >::iterator itt=map_map.begin(); itt!=map_map.end();itt++){//this will be terminated after the cuts
@@ -904,7 +951,7 @@ if(desirednumeve != -999 ){if(desirednumeve < treeReader->GetEntries()) break;}
       nnn=0;
 
       //KH
-      for(int i=0; i< cutname.size();i++){
+      for(int i=0; i< (int)cutname.size();i++){
       for(map<string , vector<TH1D> >::iterator it=itt->second.begin(); it!=itt->second.end();it++){
 	
 	if (cutname[i]==it->first){
@@ -928,7 +975,7 @@ if(desirednumeve != -999 ){if(desirednumeve < treeReader->GetEntries()) break;}
 
     //
     // Loop over different event categories (e.g. "All events, Wlnu, Zll, Zvv, etc")
-    for(int iet=0;iet<eventType.size();iet++){
+    for(int iet=0;iet<(int)eventType.size();iet++){
     for(map<string, map<string , vector<TH1D> > >::iterator itt=map_map.begin(); itt!=map_map.end();itt++){
     if (eventType[iet]==itt->first){
 
@@ -943,7 +990,7 @@ if(desirednumeve != -999 ){if(desirednumeve < treeReader->GetEntries()) break;}
       //
       // Loop over different cut flow stages (e.g. RA2nocut, RA2Inc3Jetcut, ...)
       //KH
-      for(int i=0; i< cutname.size();i++){
+      for(int i=0; i< (int)cutname.size();i++){
       for(map<string , vector<TH1D> >::iterator it=itt->second.begin(); it!=itt->second.end();it++){ 
       if (cutname[i]==it->first){
 	//KH
@@ -981,10 +1028,10 @@ int main()
 
 //mainClass mainObj("NoPileUp","T1qqqq_14TEV_2200_100","PhaseI", "Results","00");
 //mainClass mainObj("NoPileUp","T1qqqq_14TEV","PhaseI", "Results","00");
-//mainClass mainObj1_BJ("NoPileUp","BJ_14TEV_HT1","PhaseI", "Results","00");
-//mainClass mainObj2_BJ("NoPileUp","BJ_14TEV_HT2","PhaseI", "Results","00");
-//mainClass mainObj3_BJ("NoPileUp","BJ_14TEV_HT3","PhaseI", "Results","00");
-//mainClass mainObj4_BJ("NoPileUp","BJ_14TEV_HT4","PhaseI", "Results","00");
+mainClass mainObj1_BJ("NoPileUp","BJ_14TEV_HT1","PhaseI", "Results","00");
+mainClass mainObj2_BJ("NoPileUp","BJ_14TEV_HT2","PhaseI", "Results","00");
+mainClass mainObj3_BJ("NoPileUp","BJ_14TEV_HT3","PhaseI", "Results","00");
+mainClass mainObj4_BJ("NoPileUp","BJ_14TEV_HT4","PhaseI", "Results","00");
 //mainClass mainObj5_BJ("NoPileUp","BJ_14TEV_HT5","PhaseI", "Results","00");
 //mainClass mainObj6_BJ("NoPileUp","BJ_14TEV_HT6","PhaseI", "Results","00");
 //mainClass mainObj7_BJ("NoPileUp","BJ_14TEV_HT7","PhaseI", "Results","00");
@@ -993,7 +1040,7 @@ int main()
 //mainClass mainObj3_TT("NoPileUp","TT_14TEV_HT3","PhaseI", "Results","00");
 //mainClass mainObj4_TT("NoPileUp","TT_14TEV_HT4","PhaseI", "Results","00");
 //mainClass mainObj5_TT("NoPileUp","TT_14TEV_HT5","PhaseI", "Results","00");
-mainClass mainObjStopCoann("NoPileUp","Stop_CharmLSP_14TEV","PhaseI", "Results","00");
+//mainClass mainObjStopCoann("NoPileUp","Stop_CharmLSP_14TEV","PhaseI", "Results","00");
 return 0;
 }
 
