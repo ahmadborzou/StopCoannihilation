@@ -159,6 +159,8 @@ file = new TFile("stack.root","RECREATE");
         for(int i=0; i<nHT ; i++){                                                  // loop over different HT bins
 sprintf(tempname,"%s/%s/%s_%s_%s",(itt->second).c_str(),(it->second).c_str(),(histname[j]).c_str(),(it->second).c_str(),(itt->second).c_str());
 temphist = (TH1D *) inputfilevec.at(i)->Get(tempname)->Clone();
+temphist->Scale(scalevec[i]);
+temphist->SetFillColor(i+2);
           tempstack->Add(temphist);
                }//end of loop over HTbins 1..7
         sprintf(tempname,"%s_%s_%s",histname[j].c_str(),(it->second).c_str(),(itt->second).c_str());
