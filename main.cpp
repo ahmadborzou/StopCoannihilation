@@ -363,6 +363,7 @@ class mainClass{
   }
   //KH bool jettwo(){if(vecjvec[0][1]>60 && fabs(vecjvec[0][3])<4.5)return true; return false;}
   bool jettwo(){return true;} //KH: 2nd jet is optinal, so effectively no event shoudl be rejected.  
+  bool MET200(){if(met->MET > 200)return true; return false;}
   bool MET(){if(met->MET > 250)return true; return false;}
   bool pt250(){if((int)vecjvec.size()>0){if(vecjvec[0][1]>250)return true; return false;}return false;}
   bool pt300(){if((int)vecjvec.size()>0){if(vecjvec[0][1]>300)return true; return false;}return false;}
@@ -408,28 +409,29 @@ if(METMHTAsys(met,jetvec,muonvec,electronvec,photonvec) < AsysCut )return true; 
   bool checkcut(string ss){ 
     if(ss == cutname[0])return true;
     if(ss== cutname[1]) {if(Asys())return true;}
-    if(ss== cutname[2]) {if(Asys()&&jetone())return true;}
-    if(ss== cutname[3]) {if(Asys()&&jetone()&&jettwo())return true;}
-    if(ss== cutname[4]) {if(Asys()&&jetone()&&jettwo()&&threejet())return true;}
-    if(ss== cutname[5]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi())return true;}
-    if(ss== cutname[6]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep())return true;}
-    if(ss== cutname[7]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET())return true;}
-    if(ss== cutname[8]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt250())return true;}
-    if(ss== cutname[9]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt300())return true;}
-    if(ss== cutname[10]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt350())return true;}
-    if(ss== cutname[11]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt400())return true;}
-    if(ss== cutname[12]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt450())return true;}
-    if(ss== cutname[13]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt500())return true;}
-    if(ss== cutname[14]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt600())return true;}
-    if(ss== cutname[15]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt700())return true;}
-    if(ss== cutname[16]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt800())return true;}
-    if(ss== cutname[17]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt900())return true;}
-    if(ss== cutname[18]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1000())return true;}
-    if(ss== cutname[19]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1100())return true;}
-    if(ss== cutname[20]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1200())return true;}
-    if(ss== cutname[21]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1300())return true;}
-    if(ss== cutname[22]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1400())return true;}
-    if(ss== cutname[23]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1500())return true;}
+    if(ss== cutname[2])  {if(Asys()&&MET200())return true;}
+    if(ss== cutname[3]) {if(Asys()&&MET200()&&jetone())return true;}
+    if(ss== cutname[4]) {if(Asys()&&MET200()&&jetone()&&jettwo())return true;}
+    if(ss== cutname[5]) {if(Asys()&&MET200()&&jetone()&&jettwo()&&threejet())return true;}
+    if(ss== cutname[6]) {if(Asys()&&MET200()&&jetone()&&jettwo()&&threejet()&&dphi())return true;}
+    if(ss== cutname[7]) {if(Asys()&&MET200()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep())return true;}
+    if(ss== cutname[8]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET())return true;}
+    if(ss== cutname[9]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt250())return true;}
+    if(ss== cutname[10]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt300())return true;}
+    if(ss== cutname[11]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt350())return true;}
+    if(ss== cutname[12]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt400())return true;}
+    if(ss== cutname[13]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt450())return true;}
+    if(ss== cutname[14]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt500())return true;}
+    if(ss== cutname[15]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt600())return true;}
+    if(ss== cutname[16]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt700())return true;}
+    if(ss== cutname[17]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt800())return true;}
+    if(ss== cutname[18]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt900())return true;}
+    if(ss== cutname[19]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1000())return true;}
+    if(ss== cutname[20]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1100())return true;}
+    if(ss== cutname[21]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1200())return true;}
+    if(ss== cutname[22]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1300())return true;}
+    if(ss== cutname[23]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1400())return true;}
+    if(ss== cutname[24]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1500())return true;}
     //KH
     /*
     if(ss== cutname[2]) {if(Asys()&&nolep())return true;}
@@ -522,28 +524,29 @@ public:
     //The histograms, though, will be filled differently.
     cutname[0]="nocut";
     cutname[1]="Asys";
-    cutname[2]="jetone";
-    cutname[3]="jettwo";
-    cutname[4]="3jet";
-    cutname[5]="dphi";
-    cutname[6]="nolep";
-    cutname[7]="MET";
-    cutname[8]="pt250";
-    cutname[9]="pt300";
-    cutname[10]="pt350";
-    cutname[11]="pt400";
-    cutname[12]="pt450";
-    cutname[13]="pt500";
-    cutname[14]="pt600";
-    cutname[15]="pt700";
-    cutname[16]="pt800";
-    cutname[17]="pt900";
-    cutname[18]="pt1000";
-    cutname[19]="pt1100";
-    cutname[20]="pt1200";
-    cutname[21]="pt1300";
-    cutname[22]="pt1400";
-    cutname[23]="pt1500";
+    cutname[2]="MET200";
+    cutname[3]="jetone";
+    cutname[4]="jettwo";
+    cutname[5]="3jet";
+    cutname[6]="dphi";
+    cutname[7]="nolep";
+    cutname[8]="MET";
+    cutname[9]="pt250";
+    cutname[10]="pt300";
+    cutname[11]="pt350";
+    cutname[12]="pt400";
+    cutname[13]="pt450";
+    cutname[14]="pt500";
+    cutname[15]="pt600";
+    cutname[16]="pt700";
+    cutname[17]="pt800";
+    cutname[18]="pt900";
+    cutname[19]="pt1000";
+    cutname[20]="pt1100";
+    cutname[21]="pt1200";
+    cutname[22]="pt1300";
+    cutname[23]="pt1400";
+    cutname[24]="pt1500";
 
     for(int i=0; i< (int)cutname.size();i++){
       cut_histvec_map[cutname[i]]=vecTH;
@@ -589,8 +592,8 @@ public:
     //
     //Add the root files to a chain called Delphes
     sprintf(TreeList,"./FileList/%s/%s_%s_%s",Detector.c_str(),Process.c_str(),Pileup.c_str(),inputnumber.c_str());
-    //input.open(TreeList,std::fstream::in);
-    if(!input.is_open()){sprintf(TreeList,"./FileList/%s/%s_%s.list",Detector.c_str(),Process.c_str(),Pileup.c_str());input.open(TreeList,std::fstream::in);}
+    input.open(TreeList,std::fstream::in);
+    //if(!input.is_open()){sprintf(TreeList,"./FileList/%s/%s_%s.list",Detector.c_str(),Process.c_str(),Pileup.c_str());input.open(TreeList,std::fstream::in);}
     cout << "file name " << TreeList << endl; 
 //reset the chain before loading the TTrees    
 chain.Reset();
@@ -1029,9 +1032,9 @@ int main()
 //mainClass mainObj("NoPileUp","T1qqqq_14TEV_2200_100","PhaseI", "Results","00");
 //mainClass mainObj("NoPileUp","T1qqqq_14TEV","PhaseI", "Results","00");
 mainClass mainObj1_BJ("NoPileUp","BJ_14TEV_HT1","PhaseI", "Results","00");
-mainClass mainObj2_BJ("NoPileUp","BJ_14TEV_HT2","PhaseI", "Results","00");
-mainClass mainObj3_BJ("NoPileUp","BJ_14TEV_HT3","PhaseI", "Results","00");
-mainClass mainObj4_BJ("NoPileUp","BJ_14TEV_HT4","PhaseI", "Results","00");
+//mainClass mainObj2_BJ("NoPileUp","BJ_14TEV_HT2","PhaseI", "Results","00");
+//mainClass mainObj3_BJ("NoPileUp","BJ_14TEV_HT3","PhaseI", "Results","00");
+//mainClass mainObj4_BJ("NoPileUp","BJ_14TEV_HT4","PhaseI", "Results","00");
 //mainClass mainObj5_BJ("NoPileUp","BJ_14TEV_HT5","PhaseI", "Results","00");
 //mainClass mainObj6_BJ("NoPileUp","BJ_14TEV_HT6","PhaseI", "Results","00");
 //mainClass mainObj7_BJ("NoPileUp","BJ_14TEV_HT7","PhaseI", "Results","00");
