@@ -356,7 +356,7 @@ class mainClass{
     if ((int)vecjvec.size()>=2) { if(delphijj(vecjvec[0],vecjvec[1])<2.5)return true; return false;} 
     else { return true;} //KH: when there is only one jet, we still want to maintain such event.
   }
-  bool threejet(){if((int)vecjvec.size() <=2 )return true; return false;}
+  bool threejet(){if((int)vecjvec.size() >2 && vecjvec[2][1]>100 )return false; return true;}
   bool jetone(){ //KH if(vecjvec[0][1]>110 && fabs(vecjvec[0][3])<2.4)return true; return false;
     if ((int)vecjvec.size()==0) return false; //KH: if there is no jet, veto the event.
     else {if(vecjvec[0][1]>110 && fabs(vecjvec[0][3])<2.4)return true; return false;} //KH: leading jet cut 
@@ -364,7 +364,7 @@ class mainClass{
   //KH bool jettwo(){if(vecjvec[0][1]>60 && fabs(vecjvec[0][3])<4.5)return true; return false;}
   bool jettwo(){return true;} //KH: 2nd jet is optinal, so effectively no event shoudl be rejected.  
   bool MET200(){if(met->MET > 200)return true; return false;}
-  bool MET(){if(met->MET > 250)return true; return false;}
+  bool MET(){if(met->MET > 500)return true; return false;}
   bool pt250(){if((int)vecjvec.size()>0){if(vecjvec[0][1]>250)return true; return false;}return false;}
   bool pt300(){if((int)vecjvec.size()>0){if(vecjvec[0][1]>300)return true; return false;}return false;}
   bool pt350(){if((int)vecjvec.size()>0){if(vecjvec[0][1]>350)return true; return false;}return false;}
@@ -592,8 +592,8 @@ public:
     //
     //Add the root files to a chain called Delphes
     sprintf(TreeList,"./FileList/%s/%s_%s_%s",Detector.c_str(),Process.c_str(),Pileup.c_str(),inputnumber.c_str());
-    input.open(TreeList,std::fstream::in);
-    //if(!input.is_open()){sprintf(TreeList,"./FileList/%s/%s_%s.list",Detector.c_str(),Process.c_str(),Pileup.c_str());input.open(TreeList,std::fstream::in);}
+    input.open(TreeList,std::fstream::in);//uncomment this line when running on Background. For signal or files with *.list suffix comment it out
+//    if(!input.is_open()){sprintf(TreeList,"./FileList/%s/%s_%s.list",Detector.c_str(),Process.c_str(),Pileup.c_str());input.open(TreeList,std::fstream::in);} ///uncomment this line if running on signal or a file with *.list suffix. For Background comment it out.
     cout << "file name " << TreeList << endl; 
 //reset the chain before loading the TTrees    
 chain.Reset();
