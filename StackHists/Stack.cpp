@@ -123,7 +123,7 @@ histname[16]="NMuon";
 histname[17]="NTau";
   ///end of initialization of the maps
 
-int metcut = 500;
+int metcut = 0;
 //for(int metcut=250; metcut<1500 ; metcut+=50){
 
 yieldmap.clear();
@@ -135,7 +135,13 @@ yield_map.clear();
 
   //build a vector of scale factors
   //first load the cross sections into a vector
-  Sig_xs_vec.push_back(0.757); ///source: an email from Ken on May 22 2014
+//Sig_xs_vec.push_back(0.757); /// v1
+//Sig_xs_vec.push_back(1.12); // v2
+//Sig_xs_vec.push_back(1.15); // v3
+//Sig_xs_vec.push_back(1.14); // M(Stop,LSP)=(450,410) and also M(Stop,LSP)=(450,440)
+//Sig_xs_vec.push_back(2.18); // M(Stop,LSP)=(400,390) and also M(Stop,LSP)=(400,360)
+Sig_xs_vec.push_back(4.41); // M(Stop,LSP)=(350,340) and also M(Stop,LSP)=(350,310)
+
 
 
   double Sig_numberofevents =0;//this will use GetSumOfWeights() 
@@ -145,8 +151,20 @@ yield_map.clear();
 
 
   for(int i=1; i<=Sig_nHT ; i++){
-    sprintf(tempname,"../Results/results_PhaseI_Stop_CharmLSP_14TEV_NoPileUp_00.root");
-    file = new TFile(tempname, "R");
+//sprintf(tempname,"../Results/results_PhaseI_Stop_CharmLSP_14TEV_NoPileUp_00.root");
+//sprintf(tempname,"../Results/results_PhaseI_Stop_CharmLSPv2_14TEV_NoPileUp_02.root");
+//sprintf(tempname,"../Results/results_PhaseI_Stop_CharmLSPv3_14TEV_NoPileUp_03.root");
+//sprintf(tempname,"../Results/results_PhaseI_t2cc450410_14TEV_NoPileUp_00.root");  
+//sprintf(tempname,"../Results/results_PhaseI_t2cc450440_14TEV_NoPileUp_00.root");
+//sprintf(tempname,"../Results/results_PhaseI_t2cc400390_14TEV_NoPileUp_00.root");
+//sprintf(tempname,"../Results/results_PhaseI_t2cc400360_14TEV_NoPileUp_00.root");
+//sprintf(tempname,"../Results/results_PhaseI_t2cc350340_14TEV_NoPileUp_00.root");
+sprintf(tempname,"../Results/results_PhaseI_t2cc350310_14TEV_NoPileUp_00.root");
+
+
+
+
+  file = new TFile(tempname, "R");
     sprintf(tempname,"allEvents/nocut/MET_nocut_allEvents");
     tempvalue = (luminosity*Sig_xs_vec[i-1])/((* (TH1D* ) file->Get(tempname)).GetEntries());
     Sig_scalevec.push_back(tempvalue);
@@ -349,14 +367,18 @@ c+=1;   }//end of loop over cutnames
 ///write the output in a file
 fstream ff;
 ff.open("CutFlow.txt", std::fstream::out);
-ff << " Cut Name    " << "  Signal        " << "  Wlv          " << "  Zvv           " << "  TTbar          "<< "    Total BG  " << " % Signal/Background"  <<  "          Significance " << endl; 
-double totalBG=0;
+ff << " Cut Name,    " << "  Signal,      " << "  Wlv,      " << "  Zvv,     " << "  TTbar,      "<< "    Total BG,   " << " % Signal/Background,   "  <<  "    Significance " << endl; 
+double totalBG=0, delWlv=0, delZvv=0, delTT=0, delB=0, delBsquare=0;
 for(int i=0; i<yieldmap.size(); i++){
 totalBG=(double) (yieldmap[i].at(1)+yieldmap[i].at(2)+yieldmap[i].at(3));
-ff << "  " <<cutname[i]<<"       " << yieldmap[i].at(0) << "       " << yieldmap[i].at(1) <<"       " << yieldmap[i].at(2) <<"       " <<yieldmap[i].at(3) << "         "<< totalBG << "           " << yieldmap[i].at(0)/totalBG*100  <<  "               " << yieldmap[i].at(0)/sqrt(totalBG+yieldmap[i].at(0))  <<endl;  
+delWlv= 0.08*yieldmap[i].at(1);///uncrtainty for Wlv is 8%
+delZvv= 0.05*yieldmap[i].at(2);
+delTT= 0.5*yieldmap[i].at(3);///uncrtainty for TTbar is 50%
+delBsquare=pow(delWlv,2)+pow(delZvv,2)+pow(delTT,2);///delta_background = sqrt(delWlv^2+delZvv^2+delTT^2)
+ff << "  " <<cutname[i]<<",     " << yieldmap[i].at(0) << ",     " << yieldmap[i].at(1) <<",     " << yieldmap[i].at(2) <<",     " <<yieldmap[i].at(3) << ",      "<< totalBG << ",      " << yieldmap[i].at(0)/totalBG*100  <<  ",       " << yieldmap[i].at(0)/sqrt(delBsquare+totalBG+yieldmap[i].at(0))  <<endl;  
 }
 ff.close();
-
+/*
 fstream fff;
 fff.open("TighterCutFlow.txt", std::fstream::out | std::fstream::app);
 fff << " Cut Name    " << "  Signal        " << "  Wlv          " << "  Zvv           " << "  TTbar          "<< "    Total BG  " << " % Signal/Background"  <<  "          Significance " << endl; 
@@ -370,7 +392,7 @@ delBsquare=pow(delWlv,2)+pow(delZvv,2)+pow(delTT,2);///delta_background = sqrt(d
 fff << "  " <<cutname[i]<<"       " << yield_map[i].at(0) << "       " << yield_map[i].at(1) <<"       " << yield_map[i].at(2) <<"       " <<yield_map[i].at(3) << "         "<< totBG << "           " << yield_map[i].at(0)/totBG*100  <<  "               " << yield_map[i].at(0)/sqrt(delBsquare+totBG+yield_map[i].at(0))  <<endl;  
 }
 fff.close();
-
+*/
 /*
 ///report high significances and S/B ratios
 double totBG=0;

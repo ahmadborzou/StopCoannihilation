@@ -592,8 +592,8 @@ public:
     //
     //Add the root files to a chain called Delphes
     sprintf(TreeList,"./FileList/%s/%s_%s_%s",Detector.c_str(),Process.c_str(),Pileup.c_str(),inputnumber.c_str());
-    input.open(TreeList,std::fstream::in);//uncomment this line when running on Background. For signal or files with *.list suffix comment it out
-//    if(!input.is_open()){sprintf(TreeList,"./FileList/%s/%s_%s.list",Detector.c_str(),Process.c_str(),Pileup.c_str());input.open(TreeList,std::fstream::in);} ///uncomment this line if running on signal or a file with *.list suffix. For Background comment it out.
+//    input.open(TreeList,std::fstream::in);//uncomment this line when running on Background. For signal or files with *.list suffix comment it out
+    if(!input.is_open()){sprintf(TreeList,"./FileList/%s/%s_%s.list",Detector.c_str(),Process.c_str(),Pileup.c_str());input.open(TreeList,std::fstream::in);} ///uncomment this line if running on signal or a file with *.list suffix. For Background comment it out.
     cout << "file name " << TreeList << endl; 
 //reset the chain before loading the TTrees    
 chain.Reset();
@@ -1031,7 +1031,7 @@ int main()
 
 //mainClass mainObj("NoPileUp","T1qqqq_14TEV_2200_100","PhaseI", "Results","00");
 //mainClass mainObj("NoPileUp","T1qqqq_14TEV","PhaseI", "Results","00");
-mainClass mainObj1_BJ("NoPileUp","BJ_14TEV_HT1","PhaseI", "Results","00");
+//mainClass mainObj1_BJ("NoPileUp","BJ_14TEV_HT1","PhaseI", "Results","00");
 //mainClass mainObj2_BJ("NoPileUp","BJ_14TEV_HT2","PhaseI", "Results","00");
 //mainClass mainObj3_BJ("NoPileUp","BJ_14TEV_HT3","PhaseI", "Results","00");
 //mainClass mainObj4_BJ("NoPileUp","BJ_14TEV_HT4","PhaseI", "Results","00");
@@ -1044,6 +1044,18 @@ mainClass mainObj1_BJ("NoPileUp","BJ_14TEV_HT1","PhaseI", "Results","00");
 //mainClass mainObj4_TT("NoPileUp","TT_14TEV_HT4","PhaseI", "Results","00");
 //mainClass mainObj5_TT("NoPileUp","TT_14TEV_HT5","PhaseI", "Results","00");
 //mainClass mainObjStopCoann("NoPileUp","Stop_CharmLSP_14TEV","PhaseI", "Results","00");
+//mainClass mainObjStopCoann("NoPileUp","Stop_CharmLSPv2_14TEV","PhaseI", "Results","02");
+//mainClass mainObjStopCoann("NoPileUp","Stop_CharmLSPv3_14TEV","PhaseI", "Results","03");
+//mainClass mainObjStopCoann("NoPileUp","t2cc450410_14TEV","PhaseI", "Results","00");
+//mainClass mainObjStopCoann("NoPileUp","t2cc450440_14TEV","PhaseI", "Results","00");
+//mainClass mainObjStopCoann("NoPileUp","t2cc400390_14TEV","PhaseI", "Results","00");
+//mainClass mainObjStopCoann("NoPileUp","t2cc400360_14TEV","PhaseI", "Results","00");
+//mainClass mainObjStopCoann("NoPileUp","t2cc350340_14TEV","PhaseI", "Results","00");
+mainClass mainObjStopCoann("NoPileUp","t2cc350310_14TEV","PhaseI", "Results","00");
+
+
+
+
 return 0;
 }
 
