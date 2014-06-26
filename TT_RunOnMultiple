@@ -1,0 +1,21 @@
+#!/bin/bash
+for i in {1..5}
+do 
+j=0
+for n in ls FileList/PhaseI/TT_14TEV_HT${i}_NoPileUp_*
+do
+echo '#!/bin/bash'>run-qsub${i}_0${j}.sh
+echo 'source ~cmssoft/shrc' >>run-qsub${i}_0${j}.sh
+echo 'cd ~/CMSSW_5_2_6/'>>run-qsub${i}_0${j}.sh
+echo 'eval `scramv1 runtime -sh`'>>run-qsub${i}_0${j}.sh
+echo 'cd src/StopCoannihilation'>>run-qsub${i}_0${j}.sh
+echo "sed 's/mainClass mainObj1_TT(\"NoPileUp\",\"TT_14TEV_HT1\",\"PhaseI\", \"Results\",\"00\");/mainClass mainObj1_TT(\"NoPileUp\",\"TT_14TEV_HT"${i}"\",\"PhaseI\", \"Results\",\"0"$j"\");/g' main.cpp > main_sed_"${i}"_0"$j".cpp " >> run-qsub${i}_0${j}.sh
+#echo "sed -i 's/if(!input.is_open())/\/\/if(!input.is_open())/g' main_sed_"${i}"_0"$j".cpp " >> run-qsub${i}_0${j}.sh
+echo "g++ main_sed_"${i}"_0"$j".cpp -LDelphes-3.0.10 -lDelphes -o main_"${i}"_0"$j" \`root-config --cflags\` \`root-config --libs\`;" >> run-qsub${i}_0${j}.sh
+echo ' export LD_LIBRARY_PATH=/home/borzou/CMSSW_5_2_6/src/StopCoannihilation/Delphes-3.0.10:$LD_LIBRARY_PATH;' >> run-qsub${i}_0${j}.sh
+echo "./main_"${i}"_0"$j";" >> run-qsub${i}_0${j}.sh
+qsub -N BG ./run-qsub${i}_0${j}.sh
+sleep 30;
+j=$(($j+1));
+done
+done
