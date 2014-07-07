@@ -1,0 +1,24 @@
+#!/bin/bash
+for i in {1..7}
+do 
+j=0
+for n in ls FileList/PhaseII4/TT_14TEV_HT${i}_140PileUp_*
+do
+echo '#!/bin/bash'>run-qsub${i}_0${j}.sh
+echo 'source ~cmssoft/shrc' >>run-qsub${i}_0${j}.sh
+echo 'cd ~/CMSSW_5_2_6/'>>run-qsub${i}_0${j}.sh
+echo 'eval `scramv1 runtime -sh`'>>run-qsub${i}_0${j}.sh
+echo 'cd src/StopCoannihilation_PhaseII4'>>run-qsub${i}_0${j}.sh
+echo ' export LD_LIBRARY_PATH=/home/borzou/CMSSW_5_2_6/src/StopCoannihilation_PhaseII4/Delphes:$LD_LIBRARY_PATH;' >> run-qsub${i}_0${j}.sh
+if [ $j -lt 10 ]
+then
+echo "./main \"140PileUp\" \"TT_14TEV_HT"${i}"\" \"PhaseII4\" \"Results\" \"0"$j"\""  >> run-qsub${i}_0${j}.sh
+else
+echo "./main \"140PileUp\" \"TT_14TEV_HT"${i}"\" \"PhaseII4\" \"Results\" \""$j"\""  >> run-qsub${i}_0${j}.sh
+fi
+
+qsub -N BG ./run-qsub${i}_0${j}.sh
+sleep 15;
+j=$(($j+1));
+done
+done
