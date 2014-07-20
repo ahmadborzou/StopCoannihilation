@@ -73,6 +73,13 @@ double deltaphi = acos(jet1_Jet2_Dot/(a[1]*b[1]));
 return deltaphi;
 }
 
+double deltaphi(double phi1, double phi2){
+  double dphi = fabs(phi1-phi2);
+  if (dphi>3.14159) dphi = 3.14159*2.-dphi;
+  return dphi;
+}
+
+
 //
 //this function is exclusively written for BJ processes with emphesis on one B.
 bool bg_type(string bg_ ,vector<GenParticle> pvec){
@@ -344,6 +351,8 @@ class mainClass{
   map<string, histClass> histobjmap;
   histClass histObj;
   MissingET* met ;
+  MissingET* pujetidmet ;
+  MissingET* puppimet ;
   ScalarHT* sht; 
 //  TClonesArray * branchEvent ;
   TClonesArray * branchJet;
@@ -358,10 +367,15 @@ class mainClass{
   //define different cuts here
   bool nolep(){if((int)vecelecvec.size()==0 && (int)vecmuvec.size()==0 && (int)tauvec.size()==0)return true; return false;} 
   bool dphi(){//KH if(delphijj(vecjvec[0],vecjvec[1])<2.5)return true; return false;
-    if ((int)vecjvec.size()>=2) { if(delphijj(vecjvec[0],vecjvec[1])<2.5)return true; return false;} 
-    else { return true;} //KH: when there is only one jet, we still want to maintain such event.
+/*    if ((int)vecjvec.size()>=2) { if(delphijj(vecjvec[0],vecjvec[1])<2.5)return true; return false;} 
+    else { return true;} //KH: when there is only one jet, we still want to maintain such event.*/
+    if ((int)vecjvec.size()>=1){ if (deltaphi(met->Phi,vecjvec[0][2])<0.4) return false; } 
+     if ((int)vecjvec.size()>=2){ if (deltaphi(met->Phi,vecjvec[1][2])<0.4) return false; }
+     if ((int)vecjvec.size()>=3){ if (deltaphi(met->Phi,vecjvec[2][2])<0.4) return false; }
+    return true;
   }
-  bool threejet(){if((int)vecjvec.size() >2 && vecjvec[2][1]>100 )return false; return true;}
+//  bool threejet(){if((int)vecjvec.size() >2 && vecjvec[2][1]>100 )return false; return true;}
+  bool threejet(){if((int)vecjvec.size() <=3 )return true; return false;} // 1,2,3 jets allowed
   bool jetone(){ //KH if(vecjvec[0][1]>110 && fabs(vecjvec[0][3])<2.4)return true; return false;
     if ((int)vecjvec.size()==0) return false; //KH: if there is no jet, veto the event.
     else {if(vecjvec[0][1]>110 && fabs(vecjvec[0][3])<2.4)return true; return false;} //KH: leading jet cut 
@@ -733,7 +747,8 @@ weight = dw.weight(isample, GenParticlevec);
 	  electronvec.push_back(*elec);
 	  
 	  ///for HT we want events with all elecs pt > 10 and |eta|< 2.5
-	  if(elec->PT > 10 && elec->Eta < 2.5 && elec->Eta > (-2.5))
+//	  if(elec->PT > 10 && elec->Eta < 2.5 && elec->Eta > (-2.5))
+        if(elec->PT > 10 && elec->Eta < 2.5 && elec->Eta > (-2.5) && elec->IsolationVar<0.2)
 	    {
 	      //the zeroth component is the tag of the elec/first:pt /second:phi/third:eta
 	      elecvec.clear();
@@ -757,7 +772,8 @@ weight = dw.weight(isample, GenParticlevec);
 	  muonvec.push_back(*mu);
 	  
 	  ///for HT we want events with all muons pt > 10 and |eta|< 2.4
-	  if(mu->PT > 10 && mu->Eta < 2.4 && mu->Eta > (-2.4))
+//	  if(mu->PT > 10 && mu->Eta < 2.4 && mu->Eta > (-2.4))
+          if(mu->PT > 10 && mu->Eta < 2.4 && mu->Eta > (-2.4)&& mu->IsolationVar<0.2 )
 	    {
 	      //the zeroth component is the tag of the mu/first:pt /second:phi/third:eta
 	      muvec.clear();
@@ -1043,8 +1059,6 @@ tauvec.size()
   }//end of the constructor
 };//end of class mainClass
 
-//
-//
 //
 int main( int argc, char *argv[] )
 {

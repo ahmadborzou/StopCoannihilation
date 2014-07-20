@@ -24,7 +24,7 @@ PROGRAM       = main
 %.o : %.cpp $(HEADERS)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $<
 
-$(PROGRAM):     $(OBJS)
+$(PROGRAM): $(OBJS)
 	@echo "Linking $(PROGRAM) ..."
 	@$(LD) $(OBJS) $(LIBS) -o $(PROGRAM)
 	@echo "done"
