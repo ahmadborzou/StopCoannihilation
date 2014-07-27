@@ -49,7 +49,7 @@ public:
     a = eveinfarr_;
     b_hist=hist_;
     (*b_hist).Fill(*a);
-    for(int i=1; i<=17; i++){
+    for(int i=1; i<=21; i++){
       (*(b_hist+i)).Fill(*(a+i),*a);
     }
   }
@@ -351,8 +351,8 @@ class mainClass{
   map<string, histClass> histobjmap;
   histClass histObj;
   MissingET* met ;
-  MissingET* pujetidmet ;
-  MissingET* puppimet ;
+  MissingET* metpujetid ;
+  MissingET* metpuppi ;
   ScalarHT* sht; 
 //  TClonesArray * branchEvent ;
   TClonesArray * branchJet;
@@ -360,6 +360,8 @@ class mainClass{
   TClonesArray * branchMuon;
   TClonesArray * branchPhoton;
   TClonesArray * branchMet;
+  TClonesArray * branchMetPUJetID;
+  TClonesArray * branchMetPUPPI;
   TClonesArray * branchHT;
   TClonesArray * branchParticle;
   TLorentzVector tempLorvec;
@@ -367,15 +369,15 @@ class mainClass{
   //define different cuts here
   bool nolep(){if((int)vecelecvec.size()==0 && (int)vecmuvec.size()==0 && (int)tauvec.size()==0)return true; return false;} 
   bool dphi(){//KH if(delphijj(vecjvec[0],vecjvec[1])<2.5)return true; return false;
-/*    if ((int)vecjvec.size()>=2) { if(delphijj(vecjvec[0],vecjvec[1])<2.5)return true; return false;} 
-    else { return true;} //KH: when there is only one jet, we still want to maintain such event.*/
-    if ((int)vecjvec.size()>=1){ if (deltaphi(met->Phi,vecjvec[0][2])<0.4) return false; } 
+    if ((int)vecjvec.size()>=2) { if(delphijj(vecjvec[0],vecjvec[1])<2.5)return true; return false;} 
+    else { return true;} //KH: when there is only one jet, we still want to maintain such event.
+/*    if ((int)vecjvec.size()>=1){ if (deltaphi(met->Phi,vecjvec[0][2])<0.4) return false; } 
      if ((int)vecjvec.size()>=2){ if (deltaphi(met->Phi,vecjvec[1][2])<0.4) return false; }
      if ((int)vecjvec.size()>=3){ if (deltaphi(met->Phi,vecjvec[2][2])<0.4) return false; }
-    return true;
+    return true;*/
   }
-//  bool threejet(){if((int)vecjvec.size() >2 && vecjvec[2][1]>100 )return false; return true;}
-  bool threejet(){if((int)vecjvec.size() <=3 )return true; return false;} // 1,2,3 jets allowed
+  bool threejet(){if((int)vecjvec.size() >2 && vecjvec[2][1]>100 )return false; return true;}
+//  bool threejet(){if((int)vecjvec.size() <=3 )return true; return false;} // 1,2,3 jets allowed
   bool jetone(){ //KH if(vecjvec[0][1]>110 && fabs(vecjvec[0][3])<2.4)return true; return false;
     if ((int)vecjvec.size()==0) return false; //KH: if there is no jet, veto the event.
     else {if(vecjvec[0][1]>110 && fabs(vecjvec[0][3])<2.4)return true; return false;} //KH: leading jet cut 
@@ -500,6 +502,17 @@ public:
     vecTH.push_back(METAsys_hist); 
     TH1D  MET_hist =  TH1D("MET","MET Distribution",50,0,5000);
     vecTH.push_back(MET_hist);
+    
+    TH1D  METpuppi_hist =  TH1D("METpuppi","METpuppi Distribution",50,0,5000);
+    vecTH.push_back(METpuppi_hist);
+    TH1D  METpujetid_hist =  TH1D("METpujetid","METpujetid Distribution",50,0,5000);
+    vecTH.push_back(METpujetid_hist);
+    TH1D  MET_METpuppi_hist =  TH1D("MET_METpuppi","MET_METpuppi Distribution",100,-500,500);
+    vecTH.push_back(MET_METpuppi_hist);
+    TH1D  MET_METpujetid_hist =  TH1D("MET_METpujetid","MET_METpujetid Distribution",100,-500,500);
+    vecTH.push_back(MET_METpujetid_hist);
+
+
     TH1D  NJet_hist = TH1D("NJet","Number of Jets Distribution",20,0,20);
     vecTH.push_back(NJet_hist); 
     TH1D  j1Pt_hist =  TH1D("j1Pt","First jet Pt Distribution",50,0,5000);
@@ -664,6 +677,8 @@ if(desirednumeve != -999 ){if(desirednumeve < treeReader->GetEntries()) break;}
     branchMuon = treeReader->UseBranch("Muon");
     branchPhoton = treeReader->UseBranch("Photon");
     branchMet = treeReader->UseBranch("MissingET");
+    branchMetPUJetID = treeReader->UseBranch("PileUpJetIDMissingET");
+    branchMetPUPPI = treeReader->UseBranch("PuppiMissingET");
     branchHT = treeReader->UseBranch("ScalarHT");
     branchParticle = treeReader->UseBranch("Particle"); 
     //report the total number of events
@@ -679,8 +694,10 @@ if(desirednumeve != -999 ){if(desirednumeve < treeReader->GetEntries()) break;}
       
       treeReader->ReadEntry(entry);
 
-      //met and sht
+      //met, metpuppi, metpujetid, and sht
       met =(MissingET*) branchMet->At(0);
+      metpujetid =(MissingET*) branchMetPUJetID->At(0);
+      metpuppi =(MissingET*) branchMetPUPPI->At(0);
       sht= (ScalarHT*) branchHT->At(0);
 
       //Set Weight
@@ -932,11 +949,18 @@ double ptjet1=-99., phijet1=-99., etajet1=-99.; if((int)vecjvec.size()>0){ptjet1
 double ptjet2=-99., phijet2=-99., etajet2=-99.; if((int)vecjvec.size()>1){ptjet2=vecjvec[1][1];phijet2=vecjvec[1][2];etajet2=vecjvec[1][3];}    
 double ptjet3=-99., phijet3=-99., etajet3=-99.; if((int)vecjvec.size()>2){ptjet3=vecjvec[2][1];phijet3=vecjvec[2][2];etajet3=vecjvec[2][3];}
 double delphij1j2=-99.;if((int)vecjvec.size()>1){delphij1j2 = delphijj(vecjvec[0],vecjvec[1]);}
+double met_metpuppi =(double)(met->MET)-(double)(metpuppi->MET);
+double met_metpujetid= (double)(met->MET)-(double)(metpujetid->MET);
+
 ///Important: here order is sensitive. The order must be the same as that of histograms in vecTH.
 double eveinfvec[] = {
 weight, 
 METMHTAsys(met,jetvec,muonvec,electronvec,photonvec),              
 met->MET , 
+metpuppi->MET,
+metpujetid->MET,
+met_metpuppi,
+met_metpujetid,
 vecjvec.size(),
 ptjet1, //KH vecjvec[0][1], 
 etajet1,
