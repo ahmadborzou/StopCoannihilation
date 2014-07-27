@@ -1,0 +1,5 @@
+This shows how to use the tdrstyle.C macro
+root.exe
+.L tdrstyle.C
+setTDRStyle();
+.x drawPlot.C 
