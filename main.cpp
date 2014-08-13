@@ -45,11 +45,11 @@ class histClass{
   double * a;
   TH1D * b_hist;
 public:
-  void fill(double * eveinfarr_, TH1D * hist_){
+  void fill(int Nhists, double * eveinfarr_, TH1D * hist_){
     a = eveinfarr_;
     b_hist=hist_;
     (*b_hist).Fill(*a);
-    for(int i=1; i<=21; i++){
+    for(int i=1; i<=Nhists; i++){
       (*(b_hist+i)).Fill(*(a+i),*a);
     }
   }
@@ -330,6 +330,7 @@ class mainClass{
 
   //List of variables
   int terminator, desirednumeve;
+  int Nhists;
   float xs, xserr;
   double weight, CrossSection, CrossSectionError, totPx, totPy, HT, MHT, cutHT, cutMHT, pt, coss, sinn;
   vector<vector<double> > vecjvec, vecelecvec, vecmuvec;
@@ -339,6 +340,7 @@ class mainClass{
   vector<GenParticle> GenParticlevec;
   //KH
   vector<TH1D> vecTH;  //KH vec-->vecTH
+  vector<TLorentzVector> vecBtagLoose;
   vector<Photon> photonvec,phovec; vector<Electron> electronvec; vector<Muon> muonvec;vector<Jet> jetvec; 
   char TreeList[200], tempname[200];
   string pro, line, Pileup_ ;
@@ -402,7 +404,7 @@ class mainClass{
   bool pt1300(){if((int)vecjvec.size()>0){if(vecjvec[0][1]>1300)return true; return false;}return false;}
   bool pt1400(){if((int)vecjvec.size()>0){if(vecjvec[0][1]>1400)return true; return false;}return false;}
   bool pt1500(){if((int)vecjvec.size()>0){if(vecjvec[0][1]>1500)return true; return false;}return false;}
-
+  bool twoloosebtag(){if(vecBtagLoose.size() >= 2)return true; return false;} 
   //  bool threejet(){if(vecjvec.size() >= 3 && vecjvec[0][1]> 50 )return true; return false;}
   //  bool ht(){if(HT>=500) return true; return false;}
   //  bool mht(){if(MHT>=200)return true; return false;}
@@ -453,7 +455,28 @@ if(METMHTAsys(met,jetvec,muonvec,electronvec,photonvec) < AsysCut )return true; 
     if(ss== cutname[22]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1300())return true;}
     if(ss== cutname[23]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1400())return true;}
     if(ss== cutname[24]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1500())return true;}
-    //KH
+        
+    if(ss== cutname[25]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&twoloosebtag())return true;}
+    if(ss== cutname[26]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt250()&&twoloosebtag())return true;}
+    if(ss== cutname[27]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt300()&&twoloosebtag())return true;}
+    if(ss== cutname[28]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt350()&&twoloosebtag())return true;}
+    if(ss== cutname[29]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt400()&&twoloosebtag())return true;}
+    if(ss== cutname[30]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt450()&&twoloosebtag())return true;}
+    if(ss== cutname[31]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt500()&&twoloosebtag())return true;}
+    if(ss== cutname[32]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt600()&&twoloosebtag())return true;}
+    if(ss== cutname[33]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt700()&&twoloosebtag())return true;}
+    if(ss== cutname[34]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt800()&&twoloosebtag())return true;}
+    if(ss== cutname[35]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt900()&&twoloosebtag())return true;}
+    if(ss== cutname[36]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1000()&&twoloosebtag())return true;}
+    if(ss== cutname[37]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1100()&&twoloosebtag())return true;}
+    if(ss== cutname[38]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1200()&&twoloosebtag())return true;}
+    if(ss== cutname[39]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1300()&&twoloosebtag())return true;}
+    if(ss== cutname[40]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1400()&&twoloosebtag())return true;}
+    if(ss== cutname[41]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1500()&&twoloosebtag())return true;}
+
+
+
+//KH
     /*
     if(ss== cutname[2]) {if(Asys()&&nolep())return true;}
     if(ss== cutname[3]) {if(Asys()&&nolep()&&dphi())return true;}
@@ -489,7 +512,7 @@ public:
      CrossSection=-999.0; CrossSectionError=0.0; totPx=0;desirednumeve=-999; totPy=0; HT=0; MHT=0; cutHT=0; cutMHT=0; pt=0; coss=0; sinn=0;
   
     /////Here you should determine howmany events you need. If you need all the events, please comment this out. 
-    //  desirednumeve = 10000;
+    //  desirednumeve = 1000;
   
     TChain chain("Delphes");
     // Create object of class ExRootTreeReader
@@ -544,12 +567,28 @@ public:
     TH1D  NTau_hist = TH1D("NTau","Number of Taus Distribution",20,0,20);
     vecTH.push_back(NTau_hist);
 
+    TH1D  RA2NBtagLoose_hist = TH1D("NBtagLoose","Number of BtagLoose Distribution",20,0,20);
+    vecTH.push_back(RA2NBtagLoose_hist);
+    TH1D  BtagLoose1Pt_hist =  TH1D("BtagLoose1Pt","First Loose btag Pt Distribution",50,0,5000); //first Btag jet
+    vecTH.push_back(BtagLoose1Pt_hist);
+    TH1D  BtagLoose1Eta_hist = TH1D("BtagLoose1Eta","Eta of the first Loose btag",100,-5,5);
+    vecTH.push_back(BtagLoose1Eta_hist);
+    TH1D  BtagLoose1Phi_hist = TH1D("BtagLoose1Phi","Phi of the first Loose btag",50,-3.3,3.3);
+    vecTH.push_back(BtagLoose1Phi_hist);
+    TH1D  BtagLoose2Pt_hist =  TH1D("BtagLoose2Pt","Second Loose btag Pt Distribution",50,0,5000);
+    vecTH.push_back(BtagLoose2Pt_hist);
+    TH1D  BtagLoose2Eta_hist = TH1D("BtagLoose2Eta","Eta of the second Loose btag",100,-5,5);
+    vecTH.push_back(BtagLoose2Eta_hist);
+    TH1D  BtagLoose2Phi_hist = TH1D("BtagLoose2Phi","Phi of the second Loose btag",50,-3.3,3.3);
+    vecTH.push_back(BtagLoose2Phi_hist);
 
 
     TH1D cutflowhist = TH1D("cutflowhist","Cut Flow", 30,0,30);
     for(map<string, map<string , vector<TH1D> > >::iterator itt=map_map.begin(); itt!=map_map.end();itt++){
       cutflowmap[itt->first]=cutflowhist;
     }
+
+Nhists=((int)(vecTH.size())-1);//-1 is because weight shouldn't be counted.
 
     //
     //Initialize a map between string=cutnames and histvecs. copy one histvec into all of them. 
@@ -580,12 +619,32 @@ public:
     cutname[23]="pt1400";
     cutname[24]="pt1500";
 
+    cutname[25]="METBtag2";
+    cutname[26]="pt250Btag2";
+    cutname[27]="pt300Btag2";
+    cutname[28]="pt350Btag2";
+    cutname[29]="pt400Btag2";
+    cutname[30]="pt450Btag2";
+    cutname[31]="pt500Btag2";
+    cutname[32]="pt600Btag2";
+    cutname[33]="pt700Btag2";
+    cutname[34]="pt800Btag2";
+    cutname[35]="pt900Btag2";
+    cutname[36]="pt1000Btag2";
+    cutname[37]="pt1100Btag2";
+    cutname[38]="pt1200Btag2";
+    cutname[39]="pt1300Btag2";
+    cutname[40]="pt1400Btag2";
+    cutname[41]="pt1500Btag2";
+
+
     for(int i=0; i< (int)cutname.size();i++){
       cut_histvec_map[cutname[i]]=vecTH;
     }
 
     ///
     //initialize a map between string and maps. copy the map of histvecs into each
+if(Process.find("BJ")!=string::npos){
     eventType[0]="allEvents";
     eventType[1]="W";
     eventType[2]="Wlv";
@@ -596,10 +655,17 @@ public:
     eventType[7]="Zjj";
     eventType[8]="photon";
     eventType[9]="H";
-    eventType[10]="TTbar";
-    eventType[11]="TTSingLep";
-    eventType[12]="TTdiLep";
-    eventType[13]="TThadronic";
+}
+else if(Process.find("TT")!=string::npos){
+    eventType[0]="allEvents"; 
+    eventType[1]="TTbar";
+    eventType[2]="TTSingLep";
+    eventType[3]="TTdiLep";
+    eventType[4]="TThadronic";
+}
+else{
+eventType[0]="allEvents";
+}
     for(int i=0; i< (int)eventType.size();i++){
       map_map[eventType[i]]=cut_histvec_map;
     }
@@ -691,7 +757,7 @@ if(desirednumeve != -999 ){if(desirednumeve < treeReader->GetEntries()) break;}
     for(int entry = 0; entry < treeReader->GetEntries() ; entry++ ){
       //KH
       //KH if (entry >=10000) break; // Check only the first 10K events for validation purpose
-      
+    if(desirednumeve != -999 ){if(desirednumeve < entry) break;} 
       treeReader->ReadEntry(entry);
 
       //met, metpuppi, metpujetid, and sht
@@ -812,21 +878,38 @@ weight = dw.weight(isample, GenParticlevec);
 	  tauvec.push_back(jet);
 	}
       }
-      //cout << " tauSize " << tauvec.size() << endl;
-      //if(tauvec.size()>0){cout << " tau->pt: " << tauvec[0]->PT << endl;}
 
-      /*int genTaunum=0;
-	for(int i = 0; i < (int)(GenParticlevec.size()); ++i){
-	GenParticle * pa = &GenParticlevec.at(i);
-	if(fabs(pa->PID)==15){genTaunum+=1;}
-	}
-	cout << "genTaunum: " << genTaunum << endl;
-      */
+
 
       ///making the values zero for each event
       totPx=0;
       totPy=0;
       HT=0;
+
+
+ //
+      // Store the jets and btagging information
+      vecBtagLoose.clear();
+
+      // 
+      TLorentzVector v;
+      double jet_pt_threshold  = 50.;
+      double jet_eta_threshold = 2.5;
+      for(int i=0; i <branchJet->GetEntries(); i++){
+        v.SetPxPyPzE(0,0,0,0);
+        Jet* jet = (Jet*) branchJet->At(i);
+        v.SetPtEtaPhiM(jet->PT,jet->Eta,jet->Phi,jet->Mass);
+        if(jet->PT>jet_pt_threshold && fabs(jet->Eta)<jet_eta_threshold){
+         
+          if (jet->BTag& (1 << 1)){  // Btag loose
+            vecBtagLoose.push_back(v);
+          }
+          
+        }
+      }
+
+
+
 
       ///////////////////////////////////////////////////////////////////loop over jets    (load them to a vector)
       jetvec.clear();
@@ -951,6 +1034,14 @@ double ptjet3=-99., phijet3=-99., etajet3=-99.; if((int)vecjvec.size()>2){ptjet3
 double delphij1j2=-99.;if((int)vecjvec.size()>1){delphij1j2 = delphijj(vecjvec[0],vecjvec[1]);}
 double met_metpuppi =(double)(met->MET)-(double)(metpuppi->MET);
 double met_metpujetid= (double)(met->MET)-(double)(metpujetid->MET);
+double BtagLoose1pt=0;
+double BtagLoose1Eta=-1000;
+double BtagLoose1Phi=-1000;
+double BtagLoose2pt=0;
+double BtagLoose2Eta=-1000;
+double BtagLoose2Phi=-1000;
+if((int)vecBtagLoose.size()>=1){BtagLoose1pt=vecBtagLoose[0].Pt();BtagLoose1Eta=vecBtagLoose[0].Eta();BtagLoose1Phi=vecBtagLoose[0].Phi();}
+if((int)vecBtagLoose.size()>=2){BtagLoose2pt=vecBtagLoose[1].Pt();BtagLoose2Eta=vecBtagLoose[1].Eta();BtagLoose2Phi=vecBtagLoose[1].Phi();}
 
 ///Important: here order is sensitive. The order must be the same as that of histograms in vecTH.
 double eveinfvec[] = {
@@ -975,7 +1066,14 @@ delphij1j2,
 (tauvec.size()+vecmuvec.size()+vecelecvec.size()),
 vecelecvec.size(),
 vecmuvec.size(),
-tauvec.size()
+tauvec.size(),
+vecBtagLoose.size(),
+BtagLoose1pt,
+BtagLoose1Eta,
+BtagLoose1Phi,
+BtagLoose2pt,
+BtagLoose2Eta,
+BtagLoose2Phi
  }; 
 
       //loop over all the different event types: "allEvents", "Wlv", "Zvv"
@@ -992,7 +1090,7 @@ tauvec.size()
 	  //
 	  //loop over cut names and fill the histograms
 	  for(map<string , vector<TH1D> >::iterator ite=cut_histvec_map.begin(); ite!=cut_histvec_map.end();ite++){
-	    if(checkcut(ite->first)==true){histobjmap[ite->first].fill( &eveinfvec[0] ,&itt->second[ite->first][0]);}
+	    if(checkcut(ite->first)==true){histobjmap[ite->first].fill(Nhists, &eveinfvec[0] ,&itt->second[ite->first][0]);}
 	  }//end of loop over cut names
 	  
 	  //
