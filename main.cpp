@@ -605,6 +605,23 @@ Nhists=((int)(vecTH.size())-1);//-1 is because weight shouldn't be counted.
     cutname[23]="pt1400";
     cutname[24]="pt1500";
 
+    cutname[25]="METNoBtag";
+    cutname[26]="pt250NoBtag";
+    cutname[27]="pt300NoBtag";
+    cutname[28]="pt350NoBtag";
+    cutname[29]="pt400NoBtag";
+    cutname[30]="pt450NoBtag";
+    cutname[31]="pt500NoBtag";
+    cutname[32]="pt600NoBtag";
+    cutname[33]="pt700NoBtag";
+    cutname[34]="pt800NoBtag";
+    cutname[35]="pt900NoBtag";
+    cutname[36]="pt1000NoBtag";
+    cutname[37]="pt1100NoBtag";
+    cutname[38]="pt1200NoBtag";
+    cutname[39]="pt1300NoBtag";
+    cutname[40]="pt1400NoBtag";
+    cutname[41]="pt1500NoBtag";
 
 
     for(int i=0; i< (int)cutname.size();i++){
