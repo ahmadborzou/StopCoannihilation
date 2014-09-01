@@ -38,7 +38,7 @@ double zbi(double n_on, double mu_b_hat, double sigma_b){
   double n_off    = tau*mu_b_hat;
   double P_Bi     = TMath::BetaIncomplete(1./(1.+tau), n_on, n_off+1);
   double Z_Bi     = sqrt(2.)*TMath::ErfInverse(1 - 2.*P_Bi);
-
+/*
   cout  <<"  total events in signal region (S+B)               - n_on     " <<n_on      <<endl
         <<"  mean num of BG events expected in sig. region     - mu_b_hat " <<mu_b_hat  <<endl
         <<"  uncertainty of mu_b_hat                           - sigma_b  " <<sigma_b   <<endl
@@ -46,7 +46,7 @@ double zbi(double n_on, double mu_b_hat, double sigma_b){
         <<"  tau*mu_b_hat                                      - n_off    " <<n_off     <<endl
         <<"  TMath::BetaIncomplete(1./(1.+tau), n_on, n_off+1) - P_Bi     " <<P_Bi      <<endl
         <<"  sqrt(2.)*TMath::ErfInverse(1 - 2.*P_Bi)           - Z_Bi     " <<Z_Bi      <<endl;
-
+*/
   return Z_Bi;
 }
 
@@ -347,7 +347,7 @@ temphist->SetFillColor(i+2);
 if(stackingswitch==true)tempstack->Add(temphist);
                }//end of loop over HTbins 1..7
 if(histname[j]=="MET"){
-if(itt->second=="Wlv" || itt->second=="Zvv"){
+if( itt->second=="allEvents" ||itt->second=="Wlv" || itt->second=="Zvv"){
 yieldmap[c].push_back(BJ_numberofevents);
 }
 
@@ -435,9 +435,10 @@ if(stackingswitch==true)file->Close();
  //build a vector of scale factors
   //first load the cross sections into a vector
   B_xs_vec.push_back(200944.68129);
- 
+
   double B_numberofevents =0;
   const int bnHT = 1;   // Total number of HT bin samples
+
 
   for(int i=1; i<=bnHT ; i++){
     sprintf(tempname,"../Results/results_PhaseII4_B_14TEV_HT%d_140PileUp.root",i);
@@ -466,18 +467,18 @@ if(stackingswitch==true)cdtoit->cd();
         for(int i=0; i<bnHT ; i++){                                                  // loop over different HT bins
 sprintf(tempname,"%s/%s/%s_%s_%s",(itt->second).c_str(),(it->second).c_str(),(histname[j]).c_str(),(it->second).c_str(),(itt->second).c_str());
 temphist = (TH1D *) B_inputfilevec.at(i)->Get(tempname)->Clone();
+
 temphist->Scale(B_scalevec[i]);
 if(histname[j]=="MET"){
 B_numberofevents+=(double)temphist->GetSumOfWeights();
 }
 temphist->SetFillColor(i+2);
 if(stackingswitch==true)tempstack->Add(temphist);
-               }//end of loop over HTbins 1..7
+               }//end of loop over HTbins 1..5
 if(histname[j]=="MET"){
 if(itt->second=="allEvents"){
 yieldmap[c].push_back(B_numberofevents);
 }
-
 }
 B_numberofevents=0;
         sprintf(tempname,"%s_%s_%s",histname[j].c_str(),(it->second).c_str(),(itt->second).c_str());
@@ -491,6 +492,8 @@ if(stackingswitch==true)file->Close();
 //EndOfB//EndOfB//EndOfB//EndOfB//EndOfB//EndOfB//EndOfB//EndOfB//EndOfB//EndOfB//EndOfB//EndOfB//EndOfB//EndOfB
 
 
+
+
 //BJJ Section//BJJ Section//BJJ Section//BJJ Section//BJJ Section//BJJ Section//BJJ Section//BJJ Section//BJJ Section//BJJ Section//BJJ Section
 
  //build a vector of scale factors
@@ -499,10 +502,9 @@ if(stackingswitch==true)file->Close();
   BJJ_xs_vec.push_back(4.34869);
   BJJ_xs_vec.push_back(0.32465);
   BJJ_xs_vec.push_back(0.03032);
-  BJJ_xs_vec.push_back(0.00313);
 
   double BJJ_numberofevents =0;
-  const int bjjnHT = 5;   // Total number of HT bin samples
+  const int bjjnHT = 4;   // Total number of HT bin samples
 
 
   for(int i=1; i<=bjjnHT ; i++){
@@ -1011,19 +1013,106 @@ c+=1;    }//end of loop over cutnames
 if(stackingswitch==true)file->Close();
 //EndOfTJ//EndOfTJ//EndOfTJ//EndOfTJ//EndOfTJ//EndOfTJ//EndOfTJ//EndOfTJ//EndOfTJ//EndOfTJ//EndOfTJ//EndOfTJ//EndOfTJ//EndOfTJ
 
+/*
+//TTB Section//TTB Section//TTB Section//TTB Section//TTB Section//TTB Section//TTB Section//TTB Section//TTB Section//TTB Section//TTB Section
+
+ //build a vector of scale factors
+  //first load the cross sections into a vector
+//  TTB_xs_vec.push_back();
+//  TTB_xs_vec.push_back();
+//  TTB_xs_vec.push_back();
+//  TTB_xs_vec.push_back();
+
+
+  double TTB_numberofevents =0;
+  const int ttbnHT = 4;   // Total number of HT bin samples
+
+
+  for(int i=1; i<=ttbnHT ; i++){
+    sprintf(tempname,"../Results/results_PhaseII4_TTB_14TEV_HT%d_140PileUp.root",i);
+    file = new TFile(tempname, "R");
+    sprintf(tempname,"allEvents/nocut/MET_nocut_allEvents");
+    tempvalue = (luminosity*TTB_xs_vec[i-1])/((* (TH1D* ) file->Get(tempname)).GetEntries());
+    TTB_scalevec.push_back(tempvalue);
+  }//end of loop over HTbins 
+  std::cout << "normalization scale factor determination done" << std::endl;
+for(int i=1; i<=ttbnHT; i++){
+sprintf(tempname,"../Results/results_PhaseII4_TTB_14TEV_HT%d_140PileUp.root",i);
+TTB_inputfilevec.push_back(TFile::Open(tempname,"R"));
+}
+
+if(stackingswitch==true)tempstack = new THStack("stack","Binned Sample Stack");
+sprintf(tempname,"PhaseII4_TTB_14TEV_140PileUp.root");
+if(stackingswitch==true)file = new TFile(tempname,"RECREATE");
+ for(map<int , string >::iterator itt=OtherBGtype.begin(); itt!=OtherBGtype.end();itt++){        // loop over different event types
+if(stackingswitch==true)cdtoitt = file->mkdir((itt->second).c_str());
+if(stackingswitch==true)cdtoitt->cd();
+int c=0;
+    for(map<int , string >::iterator it=cutname.begin(); it!=cutname.end();it++){   // loop over different cutnames
+if(stackingswitch==true)cdtoit =  cdtoitt->mkdir((it->second).c_str());
+if(stackingswitch==true)cdtoit->cd();
+      for(int j=0; j<histname.size(); j++){                                        // loop over different histograms
+        for(int i=0; i<ttbnHT ; i++){                                                  // loop over different HT bins
+sprintf(tempname,"%s/%s/%s_%s_%s",(itt->second).c_str(),(it->second).c_str(),(histname[j]).c_str(),(it->second).c_str(),(itt->second).c_str());
+temphist = (TH1D *) TTB_inputfilevec.at(i)->Get(tempname)->Clone();
+temphist->Scale(TTB_scalevec[i]);
+if(histname[j]=="MET"){
+TTB_numberofevents+=(double)temphist->GetSumOfWeights();
+}
+temphist->SetFillColor(i+2);
+if(stackingswitch==true)tempstack->Add(temphist);
+               }//end of loop over HTbins 1..5
+if(histname[j]=="MET"){
+if(itt->second=="allEvents"){
+yieldmap[c].push_back(TTB_numberofevents);
+}
+}
+TTB_numberofevents=0;
+        sprintf(tempname,"%s_%s_%s",histname[j].c_str(),(it->second).c_str(),(itt->second).c_str());
+if(stackingswitch==true)tempstack->Write(tempname);
+if(stackingswitch==true)delete tempstack;
+if(stackingswitch==true)tempstack = new THStack("stack","Binned Sample Stack");
+      }//end of loop over histograms
+c+=1;    }//end of loop over cutnames
+  }//end of loop over event types
+if(stackingswitch==true)file->Close();
+//EndOfTTB//EndOfTTB//EndOfTTB//EndOfTTB//EndOfTTB//EndOfTTB//EndOfTTB//EndOfTTB//EndOfTTB//EndOfTTB//EndOfTTB//EndOfTTB//EndOfTTB//EndOfTTB
+*/
+
+
+//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
+for(int i=0; i < cutname.size(); i++){
+cout << "###############################\nCutName: " << cutname[i] << endl;
+for(int j=1; j <=13; j++){
+cout << yieldmap[i].at(j) << endl;
+}
+}
+//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**//**
+
 
 ///write the output in a file
 fstream ff;
 ff.open("CutFlow.txt", std::fstream::out);
 ff << " Cut Name,    " << "  Signal,      " << "  Wlv,      " << "  Zvv,     " << "  TTbar,      "<< "    Total BG,   " << " % Signal/Background,   "  <<  "    Significance, " << "  ZBI" << endl; 
-double totalBG=0, delWlv=0, delZvv=0, delTT=0, delB=0, delBsquare=0;
+double totalBG=0,delBG=0,delBJrest=0,delWlv=0,delZvv=0,delTT=0,delB=0,delBJJ=0,delBB=0,delBBB=0,delH=0,delLL=0,delLLB=0,delTB=0,delTJ=0,delBGsquare=0;
 for(int i=0; i<yieldmap.size(); i++){
-totalBG=(double) (yieldmap[i].at(1)+yieldmap[i].at(2)+yieldmap[i].at(3));
-delWlv= 0.08*yieldmap[i].at(1);///uncrtainty for Wlv is 8%
-delZvv= 0.05*yieldmap[i].at(2);
-delTT= 0.5*yieldmap[i].at(3);///uncrtainty for TTbar is 50%
-delBsquare=pow(delWlv,2)+pow(delZvv,2)+pow(delTT,2);///delta_background = sqrt(delWlv^2+delZvv^2+delTT^2)
-ff << "  " <<cutname[i]<<",     " << yieldmap[i].at(0) << ",     " << yieldmap[i].at(1) <<",     " << yieldmap[i].at(2) <<",     " <<yieldmap[i].at(3) << ",      "<< totalBG << ",      " << yieldmap[i].at(0)/totalBG*100  <<  ",       " << yieldmap[i].at(0)/sqrt(delBsquare+totalBG+yieldmap[i].at(0))<< ",    " << zbi((totalBG+yieldmap[i].at(0)),totalBG ,sqrt(delBsquare))  << endl;  
+totalBG=(double) (yieldmap[i].at(1)+yieldmap[i].at(4)+yieldmap[i].at(5)+yieldmap[i].at(6)+yieldmap[i].at(7)+yieldmap[i].at(8)+yieldmap[i].at(9)+yieldmap[i].at(10)+yieldmap[i].at(11)+yieldmap[i].at(12)+yieldmap[i].at(13));
+delBJrest= 0.25*(yieldmap[i].at(1)-yieldmap[i].at(2)-yieldmap[i].at(3));
+delWlv= 0.08*yieldmap[i].at(2);///uncrtainty for Wlv is 8%
+delZvv= 0.05*yieldmap[i].at(3);
+delTT= 0.25*yieldmap[i].at(4);///uncrtainty for TTbar is 50%
+delB= 0.25*yieldmap[i].at(5);
+delBJJ= 0.25*yieldmap[i].at(6);
+delBB= 0.25*yieldmap[i].at(7);
+delBBB= 0.25*yieldmap[i].at(8);
+delH= 0.25*yieldmap[i].at(9);
+delLL= 0.25*yieldmap[i].at(10);
+delLLB= 0.25*yieldmap[i].at(11);
+delTB= 0.25*yieldmap[i].at(12);
+delTJ= 0.25*yieldmap[i].at(13);
+
+delBGsquare=pow(delWlv,2)+pow(delZvv,2)+pow(delTT,2)+pow(delBJrest,2)+pow(delB,2)+pow(delBJJ,2)+pow(delBB,2)+pow(delBBB,2)+pow(delH,2)+pow(delLL,2)+pow(delLLB,2)+pow(delTB,2)+pow(delTJ,2);///delta_background = sqrt(delWlv^2+delZvv^2+delTT^2)
+ff << "  " <<cutname[i]<<",     " << yieldmap[i].at(0) << ",     " << yieldmap[i].at(2) <<",     " << yieldmap[i].at(3) <<",     " <<yieldmap[i].at(4) << ",      "<< totalBG << ",      " << yieldmap[i].at(0)/totalBG*100  <<  ",       " << yieldmap[i].at(0)/sqrt(delBGsquare+totalBG+yieldmap[i].at(0))<< ",    " << zbi((totalBG+yieldmap[i].at(0)),totalBG ,sqrt(delBGsquare))  << endl;  
 }
 ff.close();
 
@@ -1034,6 +1123,5 @@ int main(){
 mainClass mainObj(3000000);
 //mainClass mainObj(19700);
 cout << " done :) " << endl;
-
 }
 
