@@ -40,6 +40,32 @@ To change the output histograms one need to first determine how many of them exi
 
 using namespace std;
 
+
+bool PUJetID(Jet* jet){
+
+  bool passId = false;
+  
+  double fMeanSqDeltaRMaxBarrel  = 0.13;
+  double fBetaMinBarrel          = 0.16;
+  double fMeanSqDeltaRMaxEndcap  = 0.07;
+  double fBetaMinEndcap          = 0.06;
+  double fMeanSqDeltaRMaxForward = 0.01;
+  double fJetPTMinForNeutrals = 20.;
+  double fNeutralPTMin = 2.;
+
+  if (jet->PT > fJetPTMinForNeutrals && jet->MeanSqDeltaR > -0.1) {
+    if (fabs(jet->Eta)<1.5) {
+      passId = ((jet->Beta > fBetaMinBarrel) && (jet->MeanSqDeltaR < fMeanSqDeltaRMaxBarrel));
+    } else if (fabs(jet->Eta)<4.0) {
+      passId = ((jet->Beta > fBetaMinEndcap) && (jet->MeanSqDeltaR < fMeanSqDeltaRMaxEndcap));
+    } else {
+      passId = (jet->MeanSqDeltaR < fMeanSqDeltaRMaxForward);
+    }
+  }
+
+  return passId;
+}
+
 //
 class histClass{
   double * a;
@@ -369,7 +395,8 @@ class mainClass{
   TLorentzVector tempLorvec;
 
   //define different cuts here
-  bool nolep(){if((int)vecelecvec.size()==0 && (int)vecmuvec.size()==0 && (int)tauvec.size()==0)return true; return false;} 
+  bool nolep(){if((int)vecelecvec.size()==0 && (int)vecmuvec.size()==0 && (int)tauvec.size()==0)return true; return false;}
+  bool nopho(){if(phovec.size()==0)return true; return false;} 
   bool dphi(){//KH if(delphijj(vecjvec[0],vecjvec[1])<2.5)return true; return false;
     if ((int)vecjvec.size()>=2) { if(delphijj(vecjvec[0],vecjvec[1])<2.5)return true; return false;} 
     else { return true;} //KH: when there is only one jet, we still want to maintain such event.
@@ -405,7 +432,7 @@ class mainClass{
   bool pt1300(){if((int)vecjvec.size()>0){if(vecjvec[0][1]>1300)return true; return false;}return false;}
   bool pt1400(){if((int)vecjvec.size()>0){if(vecjvec[0][1]>1400)return true; return false;}return false;}
   bool pt1500(){if((int)vecjvec.size()>0){if(vecjvec[0][1]>1500)return true; return false;}return false;}
-  bool noloosebtag(){if(vecBtagLoose.size() >= 0)return true; return false;} 
+  bool noloosebtag(){if(vecBtagLoose.size() == 0)return true; return false;} 
   //  bool threejet(){if(vecjvec.size() >= 3 && vecjvec[0][1]> 50 )return true; return false;}
   //  bool ht(){if(HT>=500) return true; return false;}
   //  bool mht(){if(MHT>=200)return true; return false;}
@@ -438,42 +465,42 @@ if(METMHTAsys(met,jetvec,muonvec,electronvec,photonvec) < AsysCut )return true; 
     if(ss== cutname[4]) {if(Asys()&&MET200()&&jetone()&&jettwo())return true;}
     if(ss== cutname[5]) {if(Asys()&&MET200()&&jetone()&&jettwo()&&threejet())return true;}
     if(ss== cutname[6]) {if(Asys()&&MET200()&&jetone()&&jettwo()&&threejet()&&dphi())return true;}
-    if(ss== cutname[7]) {if(Asys()&&MET200()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep())return true;}
-    if(ss== cutname[8]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET())return true;}
-    if(ss== cutname[9]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt250())return true;}
-    if(ss== cutname[10]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt300())return true;}
-    if(ss== cutname[11]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt350())return true;}
-    if(ss== cutname[12]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt400())return true;}
-    if(ss== cutname[13]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt450())return true;}
-    if(ss== cutname[14]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt500())return true;}
-    if(ss== cutname[15]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt600())return true;}
-    if(ss== cutname[16]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt700())return true;}
-    if(ss== cutname[17]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt800())return true;}
-    if(ss== cutname[18]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt900())return true;}
-    if(ss== cutname[19]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1000())return true;}
-    if(ss== cutname[20]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1100())return true;}
-    if(ss== cutname[21]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1200())return true;}
-    if(ss== cutname[22]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1300())return true;}
-    if(ss== cutname[23]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1400())return true;}
-    if(ss== cutname[24]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1500())return true;}
+    if(ss== cutname[7]) {if(Asys()&&MET200()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&nopho())return true;}
+    if(ss== cutname[8]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&nopho()&&MET())return true;}
+    if(ss== cutname[9]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&nopho()&&MET()&&pt250())return true;}
+    if(ss== cutname[10]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&nopho()&&MET()&&pt300())return true;}
+    if(ss== cutname[11]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&nopho()&&MET()&&pt350())return true;}
+    if(ss== cutname[12]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&nopho()&&MET()&&pt400())return true;}
+    if(ss== cutname[13]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&nopho()&&MET()&&pt450())return true;}
+    if(ss== cutname[14]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&nopho()&&MET()&&pt500())return true;}
+    if(ss== cutname[15]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&nopho()&&MET()&&pt600())return true;}
+    if(ss== cutname[16]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&nopho()&&MET()&&pt700())return true;}
+    if(ss== cutname[17]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&nopho()&&MET()&&pt800())return true;}
+    if(ss== cutname[18]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&nopho()&&MET()&&pt900())return true;}
+    if(ss== cutname[19]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&nopho()&&MET()&&pt1000())return true;}
+    if(ss== cutname[20]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&nopho()&&MET()&&pt1100())return true;}
+    if(ss== cutname[21]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&nopho()&&MET()&&pt1200())return true;}
+    if(ss== cutname[22]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&nopho()&&MET()&&pt1300())return true;}
+    if(ss== cutname[23]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&nopho()&&MET()&&pt1400())return true;}
+    if(ss== cutname[24]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&nopho()&&MET()&&pt1500())return true;}
         
-    if(ss== cutname[25]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&noloosebtag())return true;}
-    if(ss== cutname[26]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt250()&&noloosebtag())return true;}
-    if(ss== cutname[27]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt300()&&noloosebtag())return true;}
-    if(ss== cutname[28]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt350()&&noloosebtag())return true;}
-    if(ss== cutname[29]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt400()&&noloosebtag())return true;}
-    if(ss== cutname[30]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt450()&&noloosebtag())return true;}
-    if(ss== cutname[31]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt500()&&noloosebtag())return true;}
-    if(ss== cutname[32]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt600()&&noloosebtag())return true;}
-    if(ss== cutname[33]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt700()&&noloosebtag())return true;}
-    if(ss== cutname[34]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt800()&&noloosebtag())return true;}
-    if(ss== cutname[35]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt900()&&noloosebtag())return true;}
-    if(ss== cutname[36]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1000()&&noloosebtag())return true;}
-    if(ss== cutname[37]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1100()&&noloosebtag())return true;}
-    if(ss== cutname[38]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1200()&&noloosebtag())return true;}
-    if(ss== cutname[39]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1300()&&noloosebtag())return true;}
-    if(ss== cutname[40]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1400()&&noloosebtag())return true;}
-    if(ss== cutname[41]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&MET()&&pt1500()&&noloosebtag())return true;}
+    if(ss== cutname[25]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&nopho()&&MET()&&noloosebtag())return true;}
+    if(ss== cutname[26]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&nopho()&&MET()&&pt250()&&noloosebtag())return true;}
+    if(ss== cutname[27]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&nopho()&&MET()&&pt300()&&noloosebtag())return true;}
+    if(ss== cutname[28]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&nopho()&&MET()&&pt350()&&noloosebtag())return true;}
+    if(ss== cutname[29]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&nopho()&&MET()&&pt400()&&noloosebtag())return true;}
+    if(ss== cutname[30]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&nopho()&&MET()&&pt450()&&noloosebtag())return true;}
+    if(ss== cutname[31]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&nopho()&&MET()&&pt500()&&noloosebtag())return true;}
+    if(ss== cutname[32]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&nopho()&&MET()&&pt600()&&noloosebtag())return true;}
+    if(ss== cutname[33]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&nopho()&&MET()&&pt700()&&noloosebtag())return true;}
+    if(ss== cutname[34]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&nopho()&&MET()&&pt800()&&noloosebtag())return true;}
+    if(ss== cutname[35]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&nopho()&&MET()&&pt900()&&noloosebtag())return true;}
+    if(ss== cutname[36]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&nopho()&&MET()&&pt1000()&&noloosebtag())return true;}
+    if(ss== cutname[37]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&nopho()&&MET()&&pt1100()&&noloosebtag())return true;}
+    if(ss== cutname[38]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&nopho()&&MET()&&pt1200()&&noloosebtag())return true;}
+    if(ss== cutname[39]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&nopho()&&MET()&&pt1300()&&noloosebtag())return true;}
+    if(ss== cutname[40]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&nopho()&&MET()&&pt1400()&&noloosebtag())return true;}
+    if(ss== cutname[41]) {if(Asys()&&jetone()&&jettwo()&&threejet()&&dphi()&&nolep()&&nopho()&&MET()&&pt1500()&&noloosebtag())return true;}
 
 
 
@@ -567,6 +594,21 @@ public:
     vecTH.push_back(NMuon_hist);
     TH1D  NTau_hist = TH1D("NTau","Number of Taus Distribution",20,0,20);
     vecTH.push_back(NTau_hist);
+
+    TH1D RA2NBtagLoose_hist = TH1D("NBtagLoose","Number of BtagLoose Distribution",20,0,20);
+    vecTH.push_back(RA2NBtagLoose_hist);
+    TH1D BtagLoose1Pt_hist = TH1D("BtagLoose1Pt","First Loose btag Pt Distribution",50,0,5000); //first Btag jet
+    vecTH.push_back(BtagLoose1Pt_hist);
+    TH1D BtagLoose1Eta_hist = TH1D("BtagLoose1Eta","Eta of the first Loose btag",100,-5,5);
+    vecTH.push_back(BtagLoose1Eta_hist);
+    TH1D BtagLoose1Phi_hist = TH1D("BtagLoose1Phi","Phi of the first Loose btag",50,-3.3,3.3);
+    vecTH.push_back(BtagLoose1Phi_hist);
+    TH1D BtagLoose2Pt_hist = TH1D("BtagLoose2Pt","Second Loose btag Pt Distribution",50,0,5000);
+    vecTH.push_back(BtagLoose2Pt_hist);
+    TH1D BtagLoose2Eta_hist = TH1D("BtagLoose2Eta","Eta of the second Loose btag",100,-5,5);
+    vecTH.push_back(BtagLoose2Eta_hist);
+    TH1D BtagLoose2Phi_hist = TH1D("BtagLoose2Phi","Phi of the second Loose btag",50,-3.3,3.3);
+    vecTH.push_back(BtagLoose2Phi_hist);
 
 
     TH1D cutflowhist = TH1D("cutflowhist","Cut Flow", 30,0,30);
@@ -801,7 +843,7 @@ weight = dw.weight(isample, GenParticlevec);
       for (int i = 0; i < branchPhoton->GetEntries(); ++i)
         {
           Photon* pho = (Photon*)branchPhoton->At(i);
-          if (pho->PT < 30)
+          if (pho->PT < 30 && pho->IsolationVar<0.2)
             continue;
           phovec.push_back(*pho);
         }
@@ -961,7 +1003,7 @@ weight = dw.weight(isample, GenParticlevec);
 	
 	///for HT we want events with all jets pt > 50 and |eta|< 2.5
 	//if(jetremove(jet,muonvec,electronvec,photonvec)==false && pt>50 && jet->Eta < 2.5 && jet->Eta > (-2.5))
-	if(pt>60 && jet->Eta < 4.5 && jet->Eta > (-4.5))
+	if(pt>60 && jet->Eta < 4.5 && jet->Eta > (-4.5) && PUJetID(jet) )
 	  {
 	    //the zeroth component is the tag of the jet/first:pt /second:phi/third:eta
 	    jvec.clear();
@@ -1053,14 +1095,15 @@ delphij1j2,
 (tauvec.size()+vecmuvec.size()+vecelecvec.size()),
 vecelecvec.size(),
 vecmuvec.size(),
-tauvec.size()
-/*vecBtagLoose.size(),
+tauvec.size(),
+
+vecBtagLoose.size(),
 BtagLoose1pt,
 BtagLoose1Eta,
 BtagLoose1Phi,
 BtagLoose2pt,
 BtagLoose2Eta,
-BtagLoose2Phi*/
+BtagLoose2Phi
  }; 
 
       //loop over all the different event types: "allEvents", "Wlv", "Zvv"
