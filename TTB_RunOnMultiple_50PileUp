@@ -1,0 +1,25 @@
+#!/bin/bash
+for i in {1..4}
+do 
+j=0
+for n in ls FileList/PhaseI/TTB_14TEV_HT${i}_50PileUp_*
+do
+echo '#!/bin/bash'>TTB-run-qsub${i}_0${j}.sh
+echo 'source ~cmssoft/shrc' >>TTB-run-qsub${i}_0${j}.sh
+echo 'cd ~/CMSSW_5_2_6/'>>TTB-run-qsub${i}_0${j}.sh
+echo 'eval `scramv1 runtime -sh`'>>TTB-run-qsub${i}_0${j}.sh
+echo 'cd src/StopCoannihilation_PhaseII4'>>TTB-run-qsub${i}_0${j}.sh
+echo ' export LD_LIBRARY_PATH=/home/borzou/CMSSW_5_2_6/src/StopCoannihilation_PhaseII4/Delphes:$LD_LIBRARY_PATH;' >> TTB-run-qsub${i}_0${j}.sh
+echo 'export X509_USER_PROXY=~/.x509_user_proxy' >> TTB-run-qsub${i}_0${j}.sh
+if [ $j -lt 10 ]
+then
+echo "./main \"50PileUp\" \"TTB_14TEV_HT"${i}"\" \"PhaseI\" \"Results\" \"0"$j"\""  >> TTB-run-qsub${i}_0${j}.sh
+else
+echo "./main \"50PileUp\" \"TTB_14TEV_HT"${i}"\" \"PhaseI\" \"Results\" \""$j"\""  >> TTB-run-qsub${i}_0${j}.sh
+fi
+
+qsub -N TTB ./TTB-run-qsub${i}_0${j}.sh
+sleep 5;
+j=$(($j+1));
+done
+done

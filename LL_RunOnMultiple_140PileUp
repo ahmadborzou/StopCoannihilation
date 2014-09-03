@@ -1,0 +1,25 @@
+#!/bin/bash
+for i in {1..6}
+do 
+j=0
+for n in ls FileList/PhaseII4/LL_14TEV_HT${i}_140PileUp_*
+do
+echo '#!/bin/bash'>LL-run-qsub${i}_0${j}.sh
+echo 'source ~cmssoft/shrc' >>LL-run-qsub${i}_0${j}.sh
+echo 'cd ~/CMSSW_5_2_6/'>>LL-run-qsub${i}_0${j}.sh
+echo 'eval `scramv1 runtime -sh`'>>LL-run-qsub${i}_0${j}.sh
+echo 'cd src/StopCoannihilation_PhaseII4'>>LL-run-qsub${i}_0${j}.sh
+echo ' export LD_LIBRARY_PATH=/home/borzou/CMSSW_5_2_6/src/StopCoannihilation_PhaseII4/Delphes:$LD_LIBRARY_PATH;' >> LL-run-qsub${i}_0${j}.sh
+echo 'export X509_USER_PROXY=~/.x509_user_proxy' >> LL-run-qsub${i}_0${j}.sh
+if [ $j -lt 10 ]
+then
+echo "./main \"140PileUp\" \"LL_14TEV_HT"${i}"\" \"PhaseII4\" \"Results\" \"0"$j"\""  >> LL-run-qsub${i}_0${j}.sh
+else
+echo "./main \"140PileUp\" \"LL_14TEV_HT"${i}"\" \"PhaseII4\" \"Results\" \""$j"\""  >> LL-run-qsub${i}_0${j}.sh
+fi
+
+qsub -N LL ./LL-run-qsub${i}_0${j}.sh
+sleep 5;
+j=$(($j+1));
+done
+done

@@ -2,7 +2,7 @@
 for i in {1..5}
 do 
 j=0
-for n in ls FileList/PhaseII4/TT_14TEV_HT${i}_140PileUp_*
+for n in ls FileList/PhaseI/TT_14TEV_HT${i}_50PileUp_*
 do
 echo '#!/bin/bash'>TTrun-qsub${i}_0${j}.sh
 echo 'source ~cmssoft/shrc' >>TTrun-qsub${i}_0${j}.sh
@@ -10,12 +10,12 @@ echo 'cd ~/CMSSW_5_2_6/'>>TTrun-qsub${i}_0${j}.sh
 echo 'eval `scramv1 runtime -sh`'>>TTrun-qsub${i}_0${j}.sh
 echo 'cd src/StopCoannihilation_PhaseII4'>>TTrun-qsub${i}_0${j}.sh
 echo ' export LD_LIBRARY_PATH=/home/borzou/CMSSW_5_2_6/src/StopCoannihilation_PhaseII4/Delphes:$LD_LIBRARY_PATH;' >> TTrun-qsub${i}_0${j}.sh
-echo 'export X509_USER_PROXY=~/.x509_user_proxy' >> TTrun-qsub${i}_0${j}.sh
+echo 'export X509_USER_PROXY=~/.x509_user_proxy' >> TT-run-qsub${i}_0${j}.sh
 if [ $j -lt 10 ]
 then
-echo "./main \"140PileUp\" \"TT_14TEV_HT"${i}"\" \"PhaseII4\" \"Results\" \"0"$j"\""  >> TTrun-qsub${i}_0${j}.sh
+echo "./main \"50PileUp\" \"TT_14TEV_HT"${i}"\" \"PhaseI\" \"Results\" \"0"$j"\""  >> TTrun-qsub${i}_0${j}.sh
 else
-echo "./main \"140PileUp\" \"TT_14TEV_HT"${i}"\" \"PhaseII4\" \"Results\" \""$j"\""  >> TTrun-qsub${i}_0${j}.sh
+echo "./main \"50PileUp\" \"TT_14TEV_HT"${i}"\" \"PhaseI\" \"Results\" \""$j"\""  >> TTrun-qsub${i}_0${j}.sh
 fi
 
 qsub -N TT ./TTrun-qsub${i}_0${j}.sh
