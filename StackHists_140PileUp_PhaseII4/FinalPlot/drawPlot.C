@@ -42,22 +42,26 @@ drawPlot(string cutname="RA2nocut", string histname="NJet", string scale="log"){
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   //
-  TFile * BJfile  =new TFile("../PhaseII4_BJ_14TEV_140PileUp.root","R");
-  TFile * TTfile  =new TFile("../PhaseII4_TT_14TEV_140PileUp.root","R");
-  TFile * Bfile   =new TFile("../PhaseII4_B_14TEV_140PileUp.root","R");  
-  TFile * BBfile  =new TFile("../PhaseII4_BB_14TEV_140PileUp.root","R");
-  TFile * BBBfile =new TFile("../PhaseII4_BBB_14TEV_140PileUp.root","R");
-  TFile * BJJfile =new TFile("../PhaseII4_BJJ_14TEV_140PileUp.root","R");
-  TFile * Hfile   =new TFile("../PhaseII4_H_14TEV_140PileUp.root","R");
-  TFile * LLfile  =new TFile("../PhaseII4_LL_14TEV_140PileUp.root","R");
-  TFile * LLBfile =new TFile("../PhaseII4_LLB_14TEV_140PileUp.root","R");
-  TFile * TBfile  =new TFile("../PhaseII4_TB_14TEV_140PileUp.root","R");
-  TFile * TJfile  =new TFile("../PhaseII4_TJ_14TEV_140PileUp.root","R");
-  TFile * TTBfile =new TFile("../PhaseII4_TTB_14TEV_140PileUp.root","R");
+  TFile * BJfile  =new TFile("../Sept16met900delphi1.8/PhaseII4_BJ_14TEV_140PileUp.root","R");
+  TFile * TTfile  =new TFile("../Sept16met900delphi1.8/PhaseII4_TT_14TEV_140PileUp.root","R");
+//  TFile * Bfile   =new TFile("../Sept16met900delphi1.8/PhaseII4_B_14TEV_140PileUp.root","R");  
+  TFile * BBfile  =new TFile("../Sept16met900delphi1.8/PhaseII4_BB_14TEV_140PileUp.root","R");
+//  TFile * BBBfile =new TFile("../Sept16met900delphi1.8/PhaseII4_BBB_14TEV_140PileUp.root","R");
+  TFile * BJJfile =new TFile("../Sept16met900delphi1.8/PhaseII4_BJJ_14TEV_140PileUp.root","R");
+//  TFile * Hfile   =new TFile("../Sept16met900delphi1.8/PhaseII4_H_14TEV_140PileUp.root","R");
+  TFile * LLfile  =new TFile("../Sept16met900delphi1.8/PhaseII4_LL_14TEV_140PileUp.root","R");
+//  TFile * LLBfile =new TFile("../Sept16met900delphi1.8/PhaseII4_LLB_14TEV_140PileUp.root","R");
+//  TFile * TBfile  =new TFile("../Sept16met900delphi1.8/PhaseII4_TB_14TEV_140PileUp.root","R");
+//  TFile * TJfile  =new TFile("../Sept16met900delphi1.8/PhaseII4_TJ_14TEV_140PileUp.root","R");
+//  TFile * TTBfile =new TFile("../Sept16met900delphi1.8/PhaseII4_TTB_14TEV_140PileUp.root","R");
+  TFile * Sigfile =new TFile("../Sept16met900delphi1.8/PhaseII4_Stop_CharmLSPv4_14TEV_140PileUp.root","R");
+
+
+
   //
   THStack * tempstack;
   THStack * finalstack = new THStack("finalstack","");
-  TH1D * temphist, * VJhist, * Thist, * Otherhist, * TThist, * VVhist;
+  TH1D * temphist, * VJhist, * Thist, * Otherhist, * TThist, * VVhist, * sighist;
   char tempname[200];
   char xtitlename[200];
   char ytitlename[200];
@@ -104,7 +108,7 @@ drawPlot(string cutname="RA2nocut", string histname="NJet", string scale="log"){
   temphist->SetFillColor(7);
   catLeg1->AddEntry(temphist,"t#bar{t} + V","f");
   finalstack->Add(temphist);
-  */
+  
 
   /////////All Other Backgrounds
   //
@@ -137,7 +141,21 @@ drawPlot(string cutname="RA2nocut", string histname="NJet", string scale="log"){
   tempstack = (THStack *)LLfile->Get(tempname)->Clone();
   temphist = (TH1D *) tempstack->GetStack()->Last();
   Otherhist->Add(temphist);
+*/
 
+//////////////////////////////////////////
+//the following 3 lines should be commented when BBB is not commented
+  sprintf(tempname,"allEvents/%s/%s_%s_allEvents",cutname.c_str(),histname.c_str(),cutname.c_str());
+  tempstack = (THStack *)LLfile->Get(tempname)->Clone();
+  Otherhist = (TH1D *) tempstack->GetStack()->Last();
+  Otherhist->SetFillColor(4);  ///these following four lines should be commented when LLB is not commented
+  if(histname=="MHT" && rebin_MHT!=1) Otherhist->Rebin(rebin_MHT);
+  if(histname=="HT"  && rebin_HT!=1)  Otherhist->Rebin(rebin_HT);
+  finalstack->Add(Otherhist);
+///////////////////////////////////////////
+
+
+/*
   ///add LLB to the finalstack
   sprintf(tempname,"allEvents/%s/%s_%s_allEvents",cutname.c_str(),histname.c_str(),cutname.c_str());
   tempstack = (THStack *)LLBfile->Get(tempname)->Clone();
@@ -149,7 +167,7 @@ drawPlot(string cutname="RA2nocut", string histname="NJet", string scale="log"){
   finalstack->Add(Otherhist);
 
   /////endl of other backgrounds
-
+*/
   ///add BB to the finalstack
   sprintf(tempname,"allEvents/%s/%s_%s_allEvents",cutname.c_str(),histname.c_str(),cutname.c_str());
   tempstack = (THStack *)BBfile->Get(tempname)->Clone();
@@ -158,7 +176,7 @@ drawPlot(string cutname="RA2nocut", string histname="NJet", string scale="log"){
   if(histname=="MHT" && rebin_MHT!=1) VVhist->Rebin(rebin_MHT);
   if(histname=="HT"  && rebin_HT!=1)  VVhist->Rebin(rebin_HT);
   finalstack->Add(VVhist);
-
+/*
   ///add TB to the finalstack
   sprintf(tempname,"allEvents/%s/%s_%s_allEvents",cutname.c_str(),histname.c_str(),cutname.c_str());
   tempstack = (THStack *)TBfile->Get(tempname)->Clone();
@@ -184,6 +202,17 @@ drawPlot(string cutname="RA2nocut", string histname="NJet", string scale="log"){
   tempstack = (THStack *)BJfile->Get(tempname)->Clone();
   temphist = (TH1D *) tempstack->GetStack()->Last();
   VJhist->Add(temphist);
+*/
+
+////////////////////////////
+//comment this when B is not commented
+  sprintf(tempname,"allEvents/%s/%s_%s_allEvents",cutname.c_str(),histname.c_str(),cutname.c_str());
+  tempstack = (THStack *)BJfile->Get(tempname)->Clone();
+  VJhist  = (TH1D *) tempstack->GetStack()->Last();
+
+///////////////////////////
+
+
 
   ///add BJJ to the finalstack
   sprintf(tempname,"allEvents/%s/%s_%s_allEvents",cutname.c_str(),histname.c_str(),cutname.c_str());
@@ -204,12 +233,24 @@ drawPlot(string cutname="RA2nocut", string histname="NJet", string scale="log"){
   if(histname=="HT"  && rebin_HT!=1)  TThist->Rebin(rebin_HT);
   finalstack->Add(TThist);
 
+
+//Stack the signal
+  printf(tempname,"allEvents/%s/%s_%s_allEvents",cutname.c_str(),histname.c_str(),cutname.c_str());
+
+  tempstack = (THStack *) Sigfile->Get(tempname)->Clone();
+  sighist = (TH1D *) tempstack->GetStack()->Last();
+  sighist->SetLineColor(4);
+  sighist->SetLineWidth(2);
+  sighist->SetFillStyle(0);
+  finalstack->Add(sighist);  
+
   ///
   catLeg1->AddEntry(TThist,"t#bar{t}","f");
   catLeg1->AddEntry(VJhist,"V + jets","f");
   catLeg1->AddEntry(Thist,"Single Top","f");
   catLeg1->AddEntry(VVhist,"VV","f");
   catLeg1->AddEntry(Otherhist,"Other BG","f");
+  catLeg1->AddEntry(sighist,"STOC","l");
   //
 
   ///Draw the background stack
@@ -234,20 +275,22 @@ drawPlot(string cutname="RA2nocut", string histname="NJet", string scale="log"){
     sprintf(xtitlename,"Number of jets");
     sprintf(ytitlename,"Events");
     finalstack->GetXaxis()->SetLimits(0., 20.);
-    finalstack->SetMaximum(7.);
+   // finalstack->SetMaximum(1000.);
     if (cutname=="RA2noleptoncutht2500mht1300") finalstack->SetMaximum(100.);
   }
   //
-  else if(histname=="MHT"){
+  else if(histname=="j1Pt"){
     //gPad->SetLogy();
-    sprintf(xtitlename,"#slash{H}_{T} (GeV)");
-    sprintf(ytitlename,"Events / 100 GeV");
-    finalstack->GetXaxis()->SetLimits(500., 3000.);
-    if (scale=="log"){
-      gPad->SetLogy();
-      finalstack->SetMaximum(1000.);    
-      finalstack->SetMinimum(0.3);    
-    }
+    sprintf(xtitlename,"p_{T}(jet1) (GeV)");
+    sprintf(ytitlename,"Number of Events / 100 GeV");
+    finalstack->GetXaxis()->SetLimits(1000., 2000.);
+    finalstack->SetMaximum(15000.);    
+finalstack->GetHistogram()->GetYaxis()->SetTitleOffset(1.6);
+finalstack->GetHistogram()->GetYaxis()->SetLabelSize(0.03);   
+finalstack->GetHistogram()->GetYaxis()->SetTitleSize(0.039);
+finalstack->GetHistogram()->GetXaxis()->SetTitleOffset(1);
+finalstack->GetHistogram()->GetXaxis()->SetLabelSize(0.03);
+finalstack->GetHistogram()->GetXaxis()->SetTitleSize(0.039); 
   }
   //
   else if(histname=="HT"){
@@ -280,8 +323,7 @@ drawPlot(string cutname="RA2nocut", string histname="NJet", string scale="log"){
  
   //------------------------------
   // Signal
-  TFile * Sigfile =new TFile("../PhaseII4_Stop_CharmLSPv4_14TEV_140PileUp.root","R");
-
+  
   //Draw the signal on the same canvas
   sprintf(tempname,"allEvents/%s/%s_%s_allEvents",cutname.c_str(),histname.c_str(),cutname.c_str());
 
@@ -289,13 +331,13 @@ drawPlot(string cutname="RA2nocut", string histname="NJet", string scale="log"){
   temphist = (TH1D *) tempstack->GetStack()->Last();
   temphist->SetLineColor(4);
   temphist->SetLineWidth(2);
-  //temphist->SetLineStyle(2);
+  temphist->SetLineStyle(2);
   temphist->SetFillStyle(0);
   if(histname=="MHT" && rebin_MHT!=1) temphist->Rebin(rebin_MHT);
   if(histname=="HT"  && rebin_HT!=1)  temphist->Rebin(rebin_HT);
   temphist->Draw("SAME");
   std::cout << temphist->GetSumOfWeights() << std::endl;
-  catLeg1->AddEntry(temphist,"STOC","l");
+  catLeg1->AddEntry(temphist,"(unstacked)","l");
 
   gPad->RedrawAxis();
 
